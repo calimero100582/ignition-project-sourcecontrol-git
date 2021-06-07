@@ -1,0 +1,9 @@
+{
+  "base": {
+    "style": {
+      "backgroundColor": "#185D82",
+      "color": "#D9D9D9",
+      "fontFamily": "Roboto"
+    }
+  }
+}

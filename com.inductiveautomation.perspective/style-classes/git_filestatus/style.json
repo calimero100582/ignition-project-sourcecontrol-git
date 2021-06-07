@@ -1,0 +1,9 @@
+{
+  "base": {
+    "style": {
+      "fontFamily": "Roboto",
+      "textOverflow": "ellipsis",
+      "whiteSpace": "nowrap"
+    }
+  }
+}

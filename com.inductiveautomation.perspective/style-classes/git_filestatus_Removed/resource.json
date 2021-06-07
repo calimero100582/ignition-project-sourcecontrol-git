@@ -1,0 +1,16 @@
+{
+  "scope": "G",
+  "version": 1,
+  "restricted": false,
+  "overridable": true,
+  "files": [
+    "style.json"
+  ],
+  "attributes": {
+    "lastModification": {
+      "actor": "calimero100582",
+      "timestamp": "2021-06-02T18:08:07Z"
+    },
+    "lastModificationSignature": "4657e3c3d42f626cdfa10fd97afc7d7c5fa0362411880b81bea18feb1a882bac"
+  }
+}

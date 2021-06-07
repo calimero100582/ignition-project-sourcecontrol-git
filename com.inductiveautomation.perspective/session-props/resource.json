@@ -1,0 +1,16 @@
+{
+  "scope": "G",
+  "version": 1,
+  "restricted": false,
+  "overridable": true,
+  "files": [
+    "props.json"
+  ],
+  "attributes": {
+    "lastModification": {
+      "actor": "calimero100582",
+      "timestamp": "2021-06-03T15:14:19Z"
+    },
+    "lastModificationSignature": "e7399c5602fd0acb4e856d003f8389be431d9d717dc236eb5ad066e8215bef6b"
+  }
+}

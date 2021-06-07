@@ -1,0 +1,246 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 25,
+      "width": 1100
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "imgProfile"
+        },
+        "position": {
+          "basis": "25px"
+        },
+        "propConfig": {
+          "props.source": {
+            "binding": {
+              "config": {
+                "path": "session.props.auth.user.email"
+              },
+              "transforms": [
+                {
+                  "code": "\timport hashlib\n\t\n\treturn \"https://www.gravatar.com/avatar/\" + hashlib.md5((value or \"\").lower()).hexdigest() + \"?s\u003d25\"",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "fit": {
+            "height": 25,
+            "width": 25
+          },
+          "style": {
+            "borderBottomLeftRadius": 15,
+            "borderBottomRightRadius": 15,
+            "borderTopLeftRadius": 15,
+            "borderTopRightRadius": 15,
+            "marginLeft": 5,
+            "marginRight": 5
+          }
+        },
+        "type": "ia.display.image"
+      },
+      {
+        "meta": {
+          "name": "lblProfile"
+        },
+        "position": {
+          "basis": "75px"
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "session.props.auth.user.firstName"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "spacer"
+        },
+        "position": {
+          "basis": "50px",
+          "grow": 1
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "icoNetwork"
+        },
+        "position": {
+          "basis": "30px"
+        },
+        "props": {
+          "path": "material/settings_ethernet"
+        },
+        "type": "ia.display.icon"
+      },
+      {
+        "meta": {
+          "name": "lblIpAddress"
+        },
+        "position": {
+          "basis": "100px"
+        },
+        "propConfig": {
+          "custom.key": {
+            "binding": {
+              "config": {
+                "expression": "{session.props.id}"
+              },
+              "transforms": [
+                {
+                  "code": "\tsessions \u003d system.perspective.getSessionInfo()\n\tvalue \u003d value.encode(\u0027ascii\u0027,\u0027ignore\u0027)\n\tlist \u003d [session for session in sessions if session.id \u003d\u003d value]\n\tfor session in sessions:\n\t\tif value.upper() \u003d\u003d session.id.upper().encode(\u0027ascii\u0027,\u0027ignore\u0027):\n\t\t\treturn session\n\t\t\t\n\treturn list",
+                  "type": "script"
+                }
+              ],
+              "type": "expr"
+            }
+          },
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "{session.props.id}"
+              },
+              "transforms": [
+                {
+                  "code": "\tsessions \u003d system.perspective.getSessionInfo()\n\tvalue \u003d value.encode(\u0027ascii\u0027,\u0027ignore\u0027)\n\n\tlist \u003d [session for session in sessions if session.id.encode(\u0027ascii\u0027,\u0027ignore\u0027) \u003d\u003d value]\n\n\treturn (list  or [{\"clientAddress\": \"Not Detected\"}])[0][\"clientAddress\"]",
+                  "type": "script"
+                }
+              ],
+              "type": "expr"
+            }
+          }
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "icoClock"
+        },
+        "position": {
+          "basis": "30px"
+        },
+        "props": {
+          "path": "material/access_time"
+        },
+        "type": "ia.display.icon"
+      },
+      {
+        "meta": {
+          "name": "lblTime"
+        },
+        "position": {
+          "basis": "130px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "dateFormat(now(15000), \"yyyy/MM/dd HH:mm\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "textAlign": "left"
+          }
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "dropTheme"
+        },
+        "position": {
+          "basis": "100px"
+        },
+        "propConfig": {
+          "props.value": {
+            "binding": {
+              "config": {
+                "bidirectional": true,
+                "path": "session.props.theme"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "dropdownOptionStyle": {
+            "minWidth": "200px"
+          },
+          "options": [
+            {
+              "label": "Light",
+              "value": "light"
+            },
+            {
+              "label": "Light Cool",
+              "value": "light-cool"
+            },
+            {
+              "label": "Light Warm",
+              "value": "light-warm"
+            },
+            {
+              "label": "Dark",
+              "value": "dark"
+            },
+            {
+              "label": "Dark Cool",
+              "value": "dark-cool"
+            },
+            {
+              "label": "Dark Warm",
+              "value": "dark-warm"
+            }
+          ],
+          "search": {
+            "enabled": false
+          }
+        },
+        "type": "ia.input.dropdown"
+      }
+    ],
+    "events": {
+      "system": {
+        "onStartup": {
+          "config": {
+            "script": "\tif not system.perspective.isAuthorized(False, [\"Authenticated\"]):\n\t\tsystem.perspective.login()"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      }
+    },
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "justify": "center",
+      "style": {
+        "classes": "BermudaBlue",
+        "fontSize": "0.9em"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

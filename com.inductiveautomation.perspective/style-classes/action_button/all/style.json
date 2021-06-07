@@ -1,0 +1,14 @@
+{
+  "base": {
+    "style": {
+      "backgroundColor": "var(--neutral-20)",
+      "borderTopLeftRadius": "0px",
+      "borderTopRightRadius": "0px",
+      "borderBottomLeftRadius": "0px",
+      "borderBottomRightRadius": "0px",
+      "color": "var(--neutral-80)",
+      "fontFamily": "Roboto",
+      "fontSize": "1.1em"
+    }
+  }
+}

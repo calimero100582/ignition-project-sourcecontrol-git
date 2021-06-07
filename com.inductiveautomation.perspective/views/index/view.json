@@ -1,0 +1,956 @@
+{
+  "custom": {},
+  "params": {
+    "project": null
+  },
+  "permissions": {
+    "securityLevels": [
+      {
+        "children": [],
+        "name": "Authenticated"
+      }
+    ],
+    "type": "AllOf"
+  },
+  "propConfig": {
+    "params.project": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 585,
+      "width": 1030
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "custom": {
+              "gitFolder": {
+                "folder": "value",
+                "project": "value"
+              }
+            },
+            "meta": {
+              "name": "dropProject"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 2,
+                  "rowIndex": 1,
+                  "span": 9
+                },
+                {
+                  "colIndex": 3,
+                  "name": "md",
+                  "order": 1,
+                  "rowIndex": 0,
+                  "span": 7
+                },
+                {
+                  "colIndex": 2,
+                  "name": "lg",
+                  "order": 1,
+                  "rowIndex": 0,
+                  "span": 9
+                }
+              ],
+              "height": 35
+            },
+            "propConfig": {
+              "custom.submodules": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "folder": "{session.custom.projectsFolder}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "transforms": [
+                    {
+                      "code": "\timport java.io.File as File\n\timport org.eclipse.jgit.api.Git as Git\n\t\n\tpath \u003d File(value.folder)\n\tgit \u003d Git.open(path)\n\t\n\treturn [x for x in git.submoduleStatus().call()]",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              },
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "path": "this.custom.submodules"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\timport os\n\t\n\tprojects \u003d system.project.getProjectNames()\n\tprojects.sort()\n\t\n\treturn [{\"value\": \"\", \"label\": \"Global\"}] + [{\"value\": x, \"label\": x + (\" \u003csubmodule\u003e\" if x in value else \"\")} for x in projects]",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.value": {
+                "binding": {
+                  "config": {
+                    "expression": "coalesce({view.params.project},{this.props.options[0].value})"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "scripts": {
+              "customMethods": [],
+              "extensionFunctions": null,
+              "messageHandlers": [
+                {
+                  "messageType": "git-commit-refresh",
+                  "pageScope": true,
+                  "script": "\tself.refreshBinding(\"props.options\")",
+                  "sessionScope": false,
+                  "viewScope": false
+                }
+              ]
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "meta": {
+              "name": "txtCommitMessage"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 2,
+                  "rowIndex": 3,
+                  "span": 12
+                },
+                {
+                  "colIndex": 3,
+                  "name": "md",
+                  "order": 2,
+                  "rowIndex": 1,
+                  "span": 9
+                },
+                {
+                  "colIndex": 2,
+                  "name": "lg",
+                  "order": 1,
+                  "rowIndex": 1,
+                  "span": 10
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "deferUpdates": false
+            },
+            "scripts": {
+              "customMethods": [],
+              "extensionFunctions": null,
+              "messageHandlers": [
+                {
+                  "messageType": "git-commit-revcommit",
+                  "pageScope": true,
+                  "script": "\tself.props.text \u003d \"\"",
+                  "sessionScope": false,
+                  "viewScope": false
+                }
+              ]
+            },
+            "type": "ia.input.text-field"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tsystem.perspective.sendMessage(\"git-commit-push\", self.custom.commitPayload)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "btnCommit"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 2,
+                  "rowIndex": 4,
+                  "span": 12
+                },
+                {
+                  "colIndex": 3,
+                  "name": "md",
+                  "order": 2,
+                  "rowIndex": 2,
+                  "span": 9
+                },
+                {
+                  "colIndex": 2,
+                  "name": "lg",
+                  "order": 2,
+                  "rowIndex": 2,
+                  "span": 10
+                }
+              ],
+              "height": 38
+            },
+            "propConfig": {
+              "custom.commitPayload": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "authorEmail": "{session.props.auth.user.email}",
+                      "authorName": "coalesce({session.props.auth.user.firstName},{session.props.auth.user.userName}) + if(isNull({session.props.auth.user.lastName}), \"\", \" \" + {session.props.auth.user.lastName})",
+                      "files": "{../tblFiles.props.data}",
+                      "folder": "{session.custom.projectsFolder}",
+                      "message": "{../txtCommitMessage.props.text}",
+                      "project": "{../dropProject.props.value}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t\n\tfiles \u003d [f[\"value\"][\"file\"] for f in value[\"files\"] if f[\"value\"][\"status\"] !\u003d \"Missing\"]\n\tfiles.sort()\n\t\n\tremovedFiles \u003d [f[\"value\"][\"file\"] for f in value[\"files\"] if f[\"value\"][\"status\"] \u003d\u003d \"Missing\"]\n\tremovedFiles.sort()\n\t\n\treturn {\n\t\t\"message\": value.message,\n\t\t\"authorEmail\": value.authorEmail,\n\t\t\"authorName\": value.authorName,\n\t\t\"folder\": value.folder,\n\t\t\"project\": value.project,\n\t\t\"files\": files,\n\t\t\"removedFiles\": removedFiles\n\t}",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              },
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "files": "{../tblFiles.props.data}",
+                      "message": "{../txtCommitMessage.props.text}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "transforms": [
+                    {
+                      "code": "\treturn len(value.files) \u003e 0 and len(value.message) \u003e 0",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              }
+            },
+            "props": {
+              "text": "Commit \u003c\u0026 eventually Push\u003e"
+            },
+            "scripts": {
+              "customMethods": [],
+              "extensionFunctions": null,
+              "messageHandlers": [
+                {
+                  "messageType": "git-commit-push",
+                  "pageScope": true,
+                  "script": "\t# implement your handler here\n\timport java.io.File as File;\n\timport org.eclipse.jgit.api.Git as Git;\n\t\t\n\tpath \u003d File(payload.folder)\n\tgit \u003d Git.open(path)\n\n\tif len(payload.files) \u003e 0:\n\t\taddCommand \u003d git.add()\n\t\n\t\tfor file in payload.files:\n\t\t\taddCommand \u003d addCommand.addFilepattern(file)\n\t\t\n\t\taddCommand.call()\n\n\tif len(payload.removedFiles) \u003e 0:\n\t\tremoveCommand \u003d git.rm()\n\t\n\t\tfor file in payload.removedFiles:\n\t\t\tremoveCommand \u003d removeCommand.addFilepattern(file)\n\n\t\tremoveCommand.call()\n\t\n\trevcommit \u003d git.commit().setAuthor(payload.authorName, payload.authorEmail).setMessage(payload.message).call();\n\t\n\tsystem.perspective.sendMessage(\"git-commit-revcommit\", {\"commit\": revcommit})",
+                  "sessionScope": false,
+                  "viewScope": false
+                }
+              ]
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "meta": {
+              "name": "tblFiles"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1.5,
+                  "rowIndex": 6,
+                  "span": 12
+                },
+                {
+                  "colIndex": 3,
+                  "name": "md",
+                  "order": 2,
+                  "rowIndex": 3,
+                  "span": 9
+                },
+                {
+                  "colIndex": 2,
+                  "name": "lg",
+                  "order": 2,
+                  "rowIndex": 3,
+                  "span": 10
+                }
+              ],
+              "height": 185
+            },
+            "propConfig": {
+              "props.data": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "folder": "{session.custom.projectsFolder}",
+                      "project": "{../dropProject.props.value}",
+                      "submodules": "{../dropProject.custom.submodules}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "transforms": [
+                    {
+                      "code": "\timport java.io.File as File\n\timport os\n\tfrom org.eclipse.jgit.api import Git\n\tfrom org.eclipse.jgit.submodule import SubmoduleWalk\n\tfrom org.eclipse.jgit.submodule.SubmoduleWalk import IgnoreSubmoduleMode\n\n\tpath \u003d File(value.folder)\n\t\n\tisSubmodule \u003d value.project in value.submodules\n\n\tgit \u003d Git.open(path) if not isSubmodule else Git.wrap(SubmoduleWalk.getSubmoduleRepository(path, value.project))\n\t\t\n\tstatusCmd \u003d git.status()\n\t\n\tisProject \u003d len(value.project) \u003e 0 and not isSubmodule\n\t\n\tif isProject:\n\t\tstatusCmd \u003d statusCmd.addPath(value.project)\n\t\n\tstatus \u003d statusCmd.call()\n\t\n\tfileStatus \u003d {\n\t\t#\"UncommitedChanged\": list(status.getUncommittedChanges()),\n\t\t\"Added\": list(status.getAdded()),\n\t\t\"Changed\": list(status.getChanged()),\n\t\t\"Conflicting\": list(status.getConflicting()),\n\t\t#\"Ignored\": list(status.getIgnoredNotInIndex()),\n\t\t\"Missing\": list(status.getMissing()),\n\t\t\"Modified\": list(status.getModified()),\n\t\t\"Removed\": list(status.getRemoved()),\n\t\t\"Untracked\": list(status.getUntracked())\n\t}\n\t\n\tgit.close()\n\t\n\tfiles \u003d {}\n\tfor key in fileStatus:\n\t\tfor file in fileStatus[key]:\n\t\t\tif isSubmodule or (isProject and file.startswith(value.project)) or (not isProject and not \"/\" in file):\n\t\t\t\tfiles[file] \u003d key\n\t\n\tresult \u003d []\n\tfor file in files:\n\t\tresult.append({\"file\": file, \"status\": files[file]})\n\t\t\n\tdiff \u003d [{\"value\": file, \"style\": {\"classes\": \"git_filestatus git_filestatus_\" + file[\"status\"]}} for file in result]\n\tdiff.sort()\n\t\n\treturn diff",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              }
+            },
+            "props": {
+              "cells": {
+                "style": {
+                  "paddingLeft": 5
+                }
+              },
+              "columns": [
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "file",
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "File"
+                  },
+                  "justify": "auto",
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "string",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": "",
+                    "textOverflow": "clip"
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "status",
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Status"
+                  },
+                  "justify": "auto",
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": 15
+                }
+              ],
+              "pager": {
+                "bottom": false,
+                "initialOption": 99999999
+              },
+              "selection": {
+                "data": [
+                  {
+                    "file": "com.inductiveautomation.perspective/views/index/view.json",
+                    "status": "Modified"
+                  }
+                ],
+                "selectedColumn": "file",
+                "selectedRow": 2
+              }
+            },
+            "scripts": {
+              "customMethods": [],
+              "extensionFunctions": null,
+              "messageHandlers": [
+                {
+                  "messageType": "git-commit-revcommit",
+                  "pageScope": true,
+                  "script": "\tself.refreshBinding(\"props.data\")",
+                  "sessionScope": false,
+                  "viewScope": false
+                }
+              ]
+            },
+            "type": "ia.display.table"
+          },
+          {
+            "meta": {
+              "name": "tblChanges"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 7,
+                  "span": 12
+                },
+                {
+                  "colIndex": 3,
+                  "name": "md",
+                  "order": 1,
+                  "rowIndex": 4,
+                  "span": 9
+                },
+                {
+                  "colIndex": 2,
+                  "name": "lg",
+                  "order": 1,
+                  "rowIndex": 4,
+                  "span": 10
+                }
+              ],
+              "height": 261
+            },
+            "propConfig": {
+              "props.data": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "file": "{../tblFiles.props.selection.data[0].file}",
+                      "folder": "{session.custom.projectsFolder}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "transforms": [
+                    {
+                      "code": "\timport java.io.File as File;\n\timport org.eclipse.jgit.api.Git as Git;\n\t\n\tpath \u003d File(value.folder)\n\tgit \u003d Git.open(path)\n\trepository \u003d git.getRepository()\n\theadObject \u003d repository.readOrigHead()\n\t\n\tdiff \u003d git.diff().call()\n\t\n\treturn diff",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              }
+            },
+            "props": {
+              "cells": {
+                "style": {
+                  "overflow": "visible"
+                }
+              },
+              "columns": [
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "patch",
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "justify": "left",
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "string",
+                  "resizable": false,
+                  "sort": "none",
+                  "sortable": false,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": "",
+                    "overflow": "visible"
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                }
+              ],
+              "enableHeader": false,
+              "pager": {
+                "bottom": false,
+                "initialOption": 9999999
+              },
+              "resizeMode": "fixed",
+              "rows": {
+                "height": "20px",
+                "highlight": {
+                  "enabled": false
+                },
+                "striped": {
+                  "enabled": false
+                },
+                "style": {
+                  "fontFamily": "monospace",
+                  "fontWeight": "bolder",
+                  "overflow": "visible",
+                  "whiteSpace": "nowrap"
+                }
+              },
+              "selection": {
+                "enableRowSelection": false
+              },
+              "style": {
+                "overflow": "visible"
+              }
+            },
+            "type": "ia.display.table"
+          },
+          {
+            "meta": {
+              "name": "lblProject"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 0,
+                  "span": 12
+                },
+                {
+                  "colIndex": 0,
+                  "name": "md",
+                  "order": 0.5,
+                  "rowIndex": 0,
+                  "span": 3
+                },
+                {
+                  "colIndex": 0,
+                  "name": "lg",
+                  "order": 0.5,
+                  "rowIndex": 0,
+                  "span": 2
+                }
+              ]
+            },
+            "propConfig": {
+              "position.height": {
+                "binding": {
+                  "config": {
+                    "path": "../dropProject.position.height"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "textAlign": "right"
+              },
+              "text": "Project"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "lblCommitMessage"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1.5,
+                  "rowIndex": 2,
+                  "span": 12
+                },
+                {
+                  "colIndex": 0,
+                  "name": "md",
+                  "order": 1.5,
+                  "rowIndex": 1,
+                  "span": 3
+                },
+                {
+                  "colIndex": 0,
+                  "name": "lg",
+                  "order": 0.5,
+                  "rowIndex": 1,
+                  "span": 2
+                }
+              ]
+            },
+            "propConfig": {
+              "position.height": {
+                "binding": {
+                  "config": {
+                    "path": "../txtCommitMessage.position.height"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "textAlign": "right"
+              },
+              "text": "Commit Message"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "lblFiles"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 5,
+                  "span": 12
+                },
+                {
+                  "colIndex": 0,
+                  "name": "md",
+                  "order": 1,
+                  "rowIndex": 3,
+                  "span": 3
+                },
+                {
+                  "colIndex": 0,
+                  "name": "lg",
+                  "order": 1,
+                  "rowIndex": 3,
+                  "span": 2
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "style": {
+                "textAlign": "right"
+              },
+              "text": "Files"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tsystem.perspective.sendMessage(\"git-commit-refresh\")"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "btnRefresh"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 2.5,
+                  "rowIndex": 1,
+                  "span": 3
+                },
+                {
+                  "colIndex": 10,
+                  "name": "md",
+                  "order": 1.5,
+                  "rowIndex": 0,
+                  "span": 2
+                },
+                {
+                  "colIndex": 11,
+                  "name": "lg",
+                  "order": 1.5,
+                  "rowIndex": 0,
+                  "span": 1
+                }
+              ]
+            },
+            "propConfig": {
+              "position.height": {
+                "binding": {
+                  "config": {
+                    "path": "../dropProject.position.height"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "text": "Refresh"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "meta": {
+              "name": "Label"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 5,
+                  "span": 1
+                },
+                {
+                  "colIndex": 0,
+                  "name": "md",
+                  "order": 1,
+                  "rowIndex": 5,
+                  "span": 1
+                },
+                {
+                  "colIndex": 0,
+                  "name": "lg",
+                  "order": 0.5,
+                  "rowIndex": 4,
+                  "span": 2
+                }
+              ],
+              "height": 60,
+              "width": 50,
+              "x": 96,
+              "y": 387
+            },
+            "props": {
+              "style": {
+                "textAlign": "right"
+              },
+              "text": "Diff \u003cnot implemented yet\u003e"
+            },
+            "type": "ia.display.label"
+          }
+        ],
+        "meta": {
+          "name": "ColumnContainer"
+        },
+        "position": {
+          "height": "100%",
+          "width": "100%"
+        },
+        "props": {
+          "breakpoints": [
+            {
+              "minWidth": 0,
+              "name": "sm"
+            },
+            {
+              "minWidth": 640,
+              "name": "md"
+            },
+            {
+              "minWidth": 990,
+              "name": "lg"
+            }
+          ],
+          "gutters": {
+            "horizontal": 5
+          },
+          "style": {
+            "padding": 5
+          }
+        },
+        "type": "ia.container.column"
+      },
+      {
+        "meta": {
+          "name": "lblJGitNotFound"
+        },
+        "position": {
+          "height": "100%",
+          "width": "100%"
+        },
+        "propConfig": {
+          "meta.visible": {
+            "binding": {
+              "config": {
+                "path": "this.props.text"
+              },
+              "transforms": [
+                {
+                  "code": "\ttry:\n\t\timport org.eclipse.jgit.api.Git\n\t\treturn False\n\texcept:\n\t\treturn True",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "backgroundColor": "var(--neutral-20)",
+            "fontSize": "2em",
+            "opacity": 0.8,
+            "textAlign": "center"
+          },
+          "text": "To use this, you first need to add JGit to the available libraries in your gateway"
+        },
+        "type": "ia.display.label"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "type": "ia.container.coord"
+  }
+}

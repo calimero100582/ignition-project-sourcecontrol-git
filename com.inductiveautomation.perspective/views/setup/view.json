@@ -1,0 +1,763 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 516,
+      "width": 1008
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Label"
+        },
+        "position": {
+          "height": 0.5,
+          "width": 0.5,
+          "x": 0.25,
+          "y": 0.45
+        },
+        "props": {
+          "style": {
+            "textAlign": "center"
+          },
+          "text": "Not implemented yet: initialize git directory, configuration of remote repo, etc..."
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "lblJGitNotFound"
+        },
+        "position": {
+          "height": 1,
+          "width": 1
+        },
+        "propConfig": {
+          "meta.visible": {
+            "binding": {
+              "config": {
+                "path": "this.props.text"
+              },
+              "transforms": [
+                {
+                  "code": "\ttry:\n\t\timport org.eclipse.jgit.api.Git\n\t\treturn False\n\texcept:\n\t\treturn True",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "backgroundColor": "var(--neutral-20)",
+            "fontSize": "2em",
+            "opacity": 0.85,
+            "textAlign": "center"
+          },
+          "text": "To use this, you first need to add JGit to the available libraries in your gateway"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\timport java.io.File as File;\n\timport org.eclipse.jgit.api.Git as Git;\n\t\n\tpath \u003d File(self.session.custom.projectsFolder)\n\tGit.init().setDirectory(path).call()\n\n\tsystem.perspective.sendMessage(\"git-setup-refresh\")"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "btnInitFolder"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 3,
+                  "name": "sm",
+                  "order": 2,
+                  "rowIndex": 0,
+                  "span": 9
+                },
+                {
+                  "colIndex": 3,
+                  "name": "md",
+                  "order": 2,
+                  "rowIndex": 0,
+                  "span": 9
+                },
+                {
+                  "colIndex": 3,
+                  "name": "lg",
+                  "order": 2,
+                  "rowIndex": 0,
+                  "span": 9
+                }
+              ],
+              "height": 35
+            },
+            "propConfig": {
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "now(0)"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\timport java.io.File as File;\n\timport org.eclipse.jgit.api.Git as Git;\n\n\tpath \u003d File(self.session.custom.projectsFolder)\n\t\n\ttry:\n\t\treturn not Git.open(path).getRepository().getObjectDatabase().exists()\n\texcept:\n\t\treturn True",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "text": "Init folder"
+            },
+            "scripts": {
+              "customMethods": [],
+              "extensionFunctions": null,
+              "messageHandlers": [
+                {
+                  "messageType": "git-setup-refresh",
+                  "pageScope": true,
+                  "script": "\t# implement your handler here\n\tself.refreshBinding(\"props.enabled\")",
+                  "sessionScope": false,
+                  "viewScope": false
+                }
+              ]
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "meta": {
+              "name": "lblInitialize"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 1,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 0,
+                  "span": 1
+                },
+                {
+                  "colIndex": 0,
+                  "name": "md",
+                  "order": 1,
+                  "rowIndex": 0,
+                  "span": 3
+                },
+                {
+                  "colIndex": 0,
+                  "name": "lg",
+                  "order": 1,
+                  "rowIndex": 0,
+                  "span": 3
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "style": {
+                "textAlign": "right"
+              },
+              "text": "Initialization"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "lblClone"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 1,
+                  "span": 3
+                },
+                {
+                  "colIndex": 0,
+                  "name": "md",
+                  "order": 1,
+                  "rowIndex": 1,
+                  "span": 3
+                },
+                {
+                  "colIndex": 0,
+                  "name": "lg",
+                  "order": 1,
+                  "rowIndex": 1,
+                  "span": 3
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "style": {
+                "textAlign": "right"
+              },
+              "text": "or Clone"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\timport java.io.File as File;\n\timport org.eclipse.jgit.api.Git as Git;\n\timport org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider as UsernamePasswordCredentialsProvider\n\timport os\n\n\tpath \u003d File(os.path.join(self.session.custom.projectsFolder, \"testingClone\"))\n\t\t\n\tcloneCommand \u003d Git.cloneRepository()\n\t\n\tcloneCommand \u003d cloneCommand.setURI(self.custom.cloneUri)\n\tcloneCommand \u003d cloneCommand.setDirectory(path)\n\t\n\tif self.custom.cloneUsername or self.custom.clonePassword:\n\t\tcloneCommand.setCredentialsProvider( UsernamePasswordCredentialsProvider( self.custom.cloneUsername,  ) );\n\t\t\n\tcloneCommand.call()\n\t\n\tsystem.perspective.sendMessage(\"git-setup-refresh\")"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "btnCloneRepo"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 2,
+                  "span": 12
+                },
+                {
+                  "colIndex": 9,
+                  "name": "md",
+                  "order": 2.5,
+                  "rowIndex": 2,
+                  "span": 3
+                },
+                {
+                  "colIndex": 9,
+                  "name": "lg",
+                  "order": 0.5,
+                  "rowIndex": 2,
+                  "span": 3
+                }
+              ],
+              "height": 35
+            },
+            "propConfig": {
+              "custom.clonePassword": {
+                "binding": {
+                  "config": {
+                    "path": "../txtClonePassword.props.text"
+                  },
+                  "type": "property"
+                }
+              },
+              "custom.cloneUri": {
+                "binding": {
+                  "config": {
+                    "path": "../txtCloneUri.props.text"
+                  },
+                  "type": "property"
+                }
+              },
+              "custom.cloneUsername": {
+                "binding": {
+                  "config": {
+                    "path": "../txtCloneUsername.props.text"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "(len({../txtCloneUri.props.text})\u003e0)\u0026\u0026{../btnInitFolder.props.enabled}"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "text": "Clone"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "meta": {
+              "name": "txtCloneUri"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 3,
+                  "name": "sm",
+                  "order": 1.5,
+                  "rowIndex": 1,
+                  "span": 9
+                },
+                {
+                  "colIndex": 3,
+                  "name": "md",
+                  "order": 1,
+                  "rowIndex": 1,
+                  "span": 9
+                },
+                {
+                  "colIndex": 3,
+                  "name": "lg",
+                  "order": 1.5,
+                  "rowIndex": 1,
+                  "span": 9
+                }
+              ],
+              "height": 35
+            },
+            "propConfig": {
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "{../btnInitFolder.props.enabled}"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "deferUpdates": false,
+              "placeholder": "Enter remote Uri to clone",
+              "rejectUpdatesWhileFocused": false
+            },
+            "type": "ia.input.text-field"
+          },
+          {
+            "meta": {
+              "name": "btnFetch"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 2,
+                  "rowIndex": 2,
+                  "span": 12
+                },
+                {
+                  "colIndex": 3,
+                  "name": "md",
+                  "order": 1,
+                  "rowIndex": 3,
+                  "span": 3
+                },
+                {
+                  "colIndex": 3,
+                  "name": "lg",
+                  "order": 0,
+                  "rowIndex": 3,
+                  "span": 3
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "text": "Fetch origin"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "meta": {
+              "name": "btnPull"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 3,
+                  "rowIndex": 2,
+                  "span": 12
+                },
+                {
+                  "colIndex": 6,
+                  "name": "md",
+                  "order": 1.5,
+                  "rowIndex": 3,
+                  "span": 3
+                },
+                {
+                  "colIndex": 6,
+                  "name": "lg",
+                  "order": 0.5,
+                  "rowIndex": 3,
+                  "span": 3
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "text": "Pull origin"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "meta": {
+              "name": "btnPush"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 3.5,
+                  "rowIndex": 2,
+                  "span": 12
+                },
+                {
+                  "colIndex": 9,
+                  "name": "md",
+                  "order": 2,
+                  "rowIndex": 3,
+                  "span": 3
+                },
+                {
+                  "colIndex": 9,
+                  "name": "lg",
+                  "order": 1,
+                  "rowIndex": 3,
+                  "span": 3
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "text": "Push origin"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "meta": {
+              "name": "lblBranch"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 3,
+                  "span": 2
+                },
+                {
+                  "colIndex": 0,
+                  "name": "md",
+                  "order": 0.5,
+                  "rowIndex": 4,
+                  "span": 3
+                },
+                {
+                  "colIndex": 0,
+                  "name": "lg",
+                  "order": 0.5,
+                  "rowIndex": 4,
+                  "span": 3
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "style": {
+                "textAlign": "right"
+              },
+              "text": "Branch"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "dropBranch"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 2,
+                  "name": "sm",
+                  "order": 2,
+                  "rowIndex": 3,
+                  "span": 10
+                },
+                {
+                  "colIndex": 3,
+                  "name": "md",
+                  "order": 1,
+                  "rowIndex": 4,
+                  "span": 5
+                },
+                {
+                  "colIndex": 3,
+                  "name": "lg",
+                  "order": 1,
+                  "rowIndex": 4,
+                  "span": 5
+                }
+              ],
+              "height": 35
+            },
+            "propConfig": {
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "expression": "now(0)"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\timport java.io.File as File;\n\timport org.eclipse.jgit.api.Git as Git;\n\n\tpath \u003d File(self.session.custom.projectsFolder)\n\t\n\tbranches \u003d [{\"value\": b.getName().replace(\u0027refs/heads/\u0027,\u0027\u0027), \"label\": b.getName()} for b in Git.open(path).branchList().call()]\n\t\n\treturn branches",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr"
+                }
+              },
+              "props.value": {
+                "binding": {
+                  "config": {
+                    "expression": "now(0)"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\timport java.io.File as File;\n\timport org.eclipse.jgit.api.Git as Git;\n\n\tpath \u003d File(self.session.custom.projectsFolder)\n\t\n\treturn Git.open(path).getRepository().getBranch()",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "allowCustomOptions": true
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "meta": {
+              "name": "btnCheckoutBranch"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 2.5,
+                  "rowIndex": 3,
+                  "span": 6
+                },
+                {
+                  "colIndex": 0,
+                  "name": "md",
+                  "order": 1.5,
+                  "rowIndex": 4,
+                  "span": 2
+                },
+                {
+                  "colIndex": 8,
+                  "name": "lg",
+                  "order": 1.5,
+                  "rowIndex": 4,
+                  "span": 2
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "text": "Checkout"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "meta": {
+              "name": "btnCreateBranch"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 6,
+                  "name": "sm",
+                  "order": 3.5,
+                  "rowIndex": 3,
+                  "span": 6
+                },
+                {
+                  "colIndex": 10,
+                  "name": "md",
+                  "order": 2,
+                  "rowIndex": 4,
+                  "span": 2
+                },
+                {
+                  "colIndex": 10,
+                  "name": "lg",
+                  "order": 2,
+                  "rowIndex": 4,
+                  "span": 2
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "text": "Create"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "meta": {
+              "name": "txtCloneUsername"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 0.5,
+                  "rowIndex": 2,
+                  "span": 12
+                },
+                {
+                  "colIndex": 3,
+                  "name": "md",
+                  "order": 2,
+                  "rowIndex": 2,
+                  "span": 3
+                },
+                {
+                  "colIndex": 3,
+                  "name": "lg",
+                  "order": 0,
+                  "rowIndex": 2,
+                  "span": 3
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "placeholder": "username"
+            },
+            "type": "ia.input.text-field"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\timport os\n\timport shutil\n\t\n\tpath \u003d os.path.join(self.session.custom.projectsFolder, \".git\")\n\t\n\tshutil.rmtree(path)\n\tsystem.perspective.sendMessage(\"git-setup-refresh\")"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "btnDeleteGit"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 6,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 5,
+                  "span": 6
+                },
+                {
+                  "colIndex": 9,
+                  "name": "md",
+                  "order": 2,
+                  "rowIndex": 5,
+                  "span": 3
+                },
+                {
+                  "colIndex": 9,
+                  "name": "lg",
+                  "order": 2,
+                  "rowIndex": 5,
+                  "span": 3
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "image": {
+                "icon": {
+                  "path": "material/delete"
+                }
+              },
+              "text": "Delete .git folder"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "meta": {
+              "name": "txtClonePassword"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 0.5,
+                  "rowIndex": 2,
+                  "span": 12
+                },
+                {
+                  "colIndex": 6,
+                  "name": "md",
+                  "order": 2,
+                  "rowIndex": 2,
+                  "span": 3
+                },
+                {
+                  "colIndex": 6,
+                  "name": "lg",
+                  "order": 0,
+                  "rowIndex": 2,
+                  "span": 3
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "placeholder": "password"
+            },
+            "type": "ia.input.password-field"
+          }
+        ],
+        "meta": {
+          "name": "ColumnContainer"
+        },
+        "position": {
+          "height": 1,
+          "width": 1
+        },
+        "type": "ia.container.column"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "mode": "percent"
+    },
+    "type": "ia.container.coord"
+  }
+}

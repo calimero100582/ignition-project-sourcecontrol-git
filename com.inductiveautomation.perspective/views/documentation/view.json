@@ -1,0 +1,1030 @@
+{
+  "custom": {
+    "editActive": false,
+    "previewActive": true
+  },
+  "params": {
+    "project": null
+  },
+  "propConfig": {
+    "custom.editActive": {
+      "persistent": true
+    },
+    "custom.previewActive": {
+      "persistent": true
+    },
+    "params.project": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "width": 1056
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "custom": {
+                      "text": "**bold**"
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tsystem.perspective.sendMessage(\"markdown-insert\", {\"text\": self.custom.text})"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "btnBold"
+                    },
+                    "position": {
+                      "basis": "35px"
+                    },
+                    "props": {
+                      "image": {
+                        "icon": {
+                          "path": "material/format_bold"
+                        }
+                      },
+                      "style": {
+                        "classes": "action_button/all action_button/left"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.input.button"
+                  },
+                  {
+                    "custom": {
+                      "text": "*italic*"
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tsystem.perspective.sendMessage(\"markdown-insert\", {\"text\": self.custom.text})"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "btnItalic"
+                    },
+                    "position": {
+                      "basis": "35px"
+                    },
+                    "props": {
+                      "image": {
+                        "icon": {
+                          "path": "material/format_italic"
+                        }
+                      },
+                      "style": {
+                        "classes": "action_button/all"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.input.button"
+                  },
+                  {
+                    "custom": {
+                      "text": "~~strike~~"
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tsystem.perspective.sendMessage(\"markdown-insert\", {\"text\": self.custom.text})"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "btnStrike"
+                    },
+                    "position": {
+                      "basis": "35px"
+                    },
+                    "props": {
+                      "image": {
+                        "icon": {
+                          "path": "material/strikethrough_s"
+                        }
+                      },
+                      "style": {
+                        "classes": "action_button/all"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.input.button"
+                  },
+                  {
+                    "custom": {
+                      "text": "# header1"
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tsystem.perspective.sendMessage(\"markdown-insert\", {\"text\": self.custom.text})"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "btnHeader1"
+                    },
+                    "position": {
+                      "basis": "35px"
+                    },
+                    "props": {
+                      "image": {
+                        "icon": {
+                          "path": "material/title"
+                        }
+                      },
+                      "style": {
+                        "classes": "action_button/all"
+                      },
+                      "text": 1,
+                      "textStyle": {
+                        "fontSize": "0.6em",
+                        "marginLeft": "-8px",
+                        "marginTop": "14px"
+                      }
+                    },
+                    "type": "ia.input.button"
+                  },
+                  {
+                    "custom": {
+                      "text": "## header2"
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tsystem.perspective.sendMessage(\"markdown-insert\", {\"text\": self.custom.text})"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "btnHeader2"
+                    },
+                    "position": {
+                      "basis": "35px"
+                    },
+                    "props": {
+                      "image": {
+                        "icon": {
+                          "path": "material/title"
+                        }
+                      },
+                      "style": {
+                        "classes": "action_button/all"
+                      },
+                      "text": 2,
+                      "textStyle": {
+                        "fontSize": "0.6em",
+                        "marginLeft": "-8px",
+                        "marginTop": "14px"
+                      }
+                    },
+                    "type": "ia.input.button"
+                  },
+                  {
+                    "custom": {
+                      "text": "### header3"
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tsystem.perspective.sendMessage(\"markdown-insert\", {\"text\": self.custom.text})"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "btnHeader3"
+                    },
+                    "position": {
+                      "basis": "35px"
+                    },
+                    "props": {
+                      "image": {
+                        "icon": {
+                          "path": "material/title"
+                        }
+                      },
+                      "style": {
+                        "classes": "action_button/all action_button/right"
+                      },
+                      "text": 3,
+                      "textStyle": {
+                        "fontSize": "0.6em",
+                        "marginLeft": "-8px",
+                        "marginTop": "14px"
+                      }
+                    },
+                    "type": "ia.input.button"
+                  },
+                  {
+                    "meta": {
+                      "name": "separator_1"
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "action_button/seperator"
+                      }
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "custom": {
+                      "text": "\u003e quote"
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tsystem.perspective.sendMessage(\"markdown-insert\", {\"text\": self.custom.text})"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "btnQuote"
+                    },
+                    "position": {
+                      "basis": "35px"
+                    },
+                    "props": {
+                      "image": {
+                        "icon": {
+                          "path": "material/format_quote"
+                        }
+                      },
+                      "style": {
+                        "classes": "action_button/all action_button/left"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.input.button"
+                  },
+                  {
+                    "custom": {
+                      "text": "    code"
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tsystem.perspective.sendMessage(\"markdown-insert\", {\"text\": self.custom.text})"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "btnCode"
+                    },
+                    "position": {
+                      "basis": "35px"
+                    },
+                    "props": {
+                      "image": {
+                        "icon": {
+                          "path": "material/code"
+                        }
+                      },
+                      "style": {
+                        "classes": "action_button/all"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.input.button"
+                  },
+                  {
+                    "custom": {
+                      "text": "* item 1\n* item 2"
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tsystem.perspective.sendMessage(\"markdown-insert\", {\"text\": self.custom.text})"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "btnBulletList"
+                    },
+                    "position": {
+                      "basis": "35px"
+                    },
+                    "props": {
+                      "image": {
+                        "icon": {
+                          "path": "material/format_list_bulleted"
+                        }
+                      },
+                      "style": {
+                        "classes": "action_button/all"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.input.button"
+                  },
+                  {
+                    "custom": {
+                      "text": "1. item 1 \n1. item 2 "
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tsystem.perspective.sendMessage(\"markdown-insert\", {\"text\": self.custom.text})"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "btnNumberedList"
+                    },
+                    "position": {
+                      "basis": "35px"
+                    },
+                    "props": {
+                      "image": {
+                        "icon": {
+                          "path": "material/format_list_numbered"
+                        }
+                      },
+                      "style": {
+                        "classes": "action_button/all"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.input.button"
+                  },
+                  {
+                    "custom": {
+                      "text": "- [x]  task 1 \n- [ ]  task 2 "
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tsystem.perspective.sendMessage(\"markdown-insert\", {\"text\": self.custom.text})"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "btnNumberedList_0"
+                    },
+                    "position": {
+                      "basis": "35px"
+                    },
+                    "props": {
+                      "image": {
+                        "icon": {
+                          "path": "material/playlist_add_check"
+                        }
+                      },
+                      "style": {
+                        "classes": "action_button/all action_button/right"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.input.button"
+                  },
+                  {
+                    "meta": {
+                      "name": "separator_2"
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "action_button/seperator"
+                      }
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "custom": {
+                      "text": "[Link](http://www)  "
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tsystem.perspective.sendMessage(\"markdown-insert\", {\"text\": self.custom.text})"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "btnLink"
+                    },
+                    "position": {
+                      "basis": "35px"
+                    },
+                    "props": {
+                      "image": {
+                        "icon": {
+                          "path": "material/link"
+                        }
+                      },
+                      "style": {
+                        "classes": "action_button/all action_button/left"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.input.button"
+                  },
+                  {
+                    "custom": {
+                      "text": "![alt text](image.jpg)"
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tsystem.perspective.sendMessage(\"markdown-insert\", {\"text\": self.custom.text})"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "btnImage"
+                    },
+                    "position": {
+                      "basis": "35px"
+                    },
+                    "props": {
+                      "image": {
+                        "icon": {
+                          "path": "material/image"
+                        }
+                      },
+                      "style": {
+                        "classes": "action_button/all action_button/right"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.input.button"
+                  },
+                  {
+                    "meta": {
+                      "name": "separator_3"
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "action_button/seperator"
+                      }
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "custom": {
+                      "text": "----------"
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tsystem.perspective.sendMessage(\"markdown-insert\", {\"text\": self.custom.text})"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "btnSplitter"
+                    },
+                    "position": {
+                      "basis": "35px"
+                    },
+                    "props": {
+                      "image": {
+                        "icon": {
+                          "path": "material/drag_handle"
+                        }
+                      },
+                      "style": {
+                        "classes": "action_button/all action_button/left"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.input.button"
+                  },
+                  {
+                    "custom": {
+                      "text": "| Column 1 | Column 2 | \n| ------------ | ------------ | \n| Row 1 1 | Row 1 2 | \n| Row 2 1 | Row 2 2 |  "
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tsystem.perspective.sendMessage(\"markdown-insert\", {\"text\": self.custom.text})"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "btnTable"
+                    },
+                    "position": {
+                      "basis": "35px"
+                    },
+                    "props": {
+                      "image": {
+                        "icon": {
+                          "path": "material/border_all"
+                        }
+                      },
+                      "style": {
+                        "classes": "action_button/all action_button/right"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.input.button"
+                  },
+                  {
+                    "meta": {
+                      "name": "separator_4"
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "action_button/seperator"
+                      }
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tsystem.perspective.sendMessage(\"git-documentation-toggle-preview-mode\")"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "btnPreview"
+                    },
+                    "position": {
+                      "basis": "35px"
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "path": "view.custom.previewActive"
+                          },
+                          "transforms": [
+                            {
+                              "fallback": "action_button/all action_button/left action_button/right action_button/selected",
+                              "inputType": "scalar",
+                              "mappings": [
+                                {
+                                  "input": false,
+                                  "output": "action_button/all action_button/left action_button/right"
+                                }
+                              ],
+                              "outputType": "style-list",
+                              "type": "map"
+                            }
+                          ],
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "props": {
+                      "image": {
+                        "icon": {
+                          "path": "material/remove_red_eye"
+                        }
+                      },
+                      "style": {},
+                      "text": ""
+                    },
+                    "type": "ia.input.button"
+                  }
+                ],
+                "meta": {
+                  "name": "edition"
+                },
+                "position": {
+                  "basis": "200px",
+                  "grow": 1
+                },
+                "propConfig": {
+                  "meta.visible": {
+                    "binding": {
+                      "config": {
+                        "path": "view.custom.editActive"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tsystem.perspective.sendMessage(\"git-documentation-project\", {\"folder\": self.session.custom.projectsFolder, \"project\": self.props.value})"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "dropProject"
+                },
+                "position": {
+                  "basis": "200px"
+                },
+                "propConfig": {
+                  "props.options": {
+                    "binding": {
+                      "config": {
+                        "path": "session.custom.projectsFolder"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tfrom com.inductiveautomation.ignition.gateway import IgnitionGateway\n\t\n\tprojects \u003d list(IgnitionGateway.get().getProjectManager().projectNames)\n\tprojects.sort()\n\t\t\n\treturn [{\"value\": \"\", \"label\": \"Global\"}] + [{\"value\": x, \"label\": x} for x in projects]",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  },
+                  "props.value": {
+                    "binding": {
+                      "config": {
+                        "expression": "coalesce({view.params.project},{this.props.options[0].value})"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "marginLeft": 4
+                  }
+                },
+                "scripts": {
+                  "customMethods": [],
+                  "extensionFunctions": null,
+                  "messageHandlers": [
+                    {
+                      "messageType": "git-commit-refresh",
+                      "pageScope": true,
+                      "script": "\tself.refreshBinding(\"props.options\")",
+                      "sessionScope": false,
+                      "viewScope": false
+                    }
+                  ]
+                },
+                "type": "ia.input.dropdown"
+              },
+              {
+                "meta": {
+                  "name": "separator_5"
+                },
+                "props": {
+                  "style": {
+                    "classes": "action_button/seperator"
+                  }
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tsystem.perspective.sendMessage(\"git-documentation-toggle-edit-mode\")"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "btnEdit"
+                },
+                "position": {
+                  "basis": "35px"
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "path": "view.custom.editActive"
+                      },
+                      "transforms": [
+                        {
+                          "fallback": "action_button/all action_button/left action_button/selected",
+                          "inputType": "scalar",
+                          "mappings": [
+                            {
+                              "input": false,
+                              "output": "action_button/all action_button/left"
+                            }
+                          ],
+                          "outputType": "style-list",
+                          "type": "map"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "image": {
+                    "icon": {
+                      "path": "material/edit"
+                    }
+                  },
+                  "style": {},
+                  "text": ""
+                },
+                "type": "ia.input.button"
+              },
+              {
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tsystem.perspective.sendMessage(\"git-documentation-save\")"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "btnSave"
+                },
+                "position": {
+                  "basis": "35px"
+                },
+                "props": {
+                  "image": {
+                    "icon": {
+                      "path": "material/save_alt"
+                    }
+                  },
+                  "style": {
+                    "classes": "action_button/all action_button/right"
+                  },
+                  "text": ""
+                },
+                "type": "ia.input.button"
+              }
+            ],
+            "meta": {
+              "name": "actions"
+            },
+            "position": {
+              "basis": "40px"
+            },
+            "props": {
+              "style": {
+                "padding": 4
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "custom": {
+                  "readmeFile": "C:\\Program Files\\Inductive Automation\\Ignition\\data\\projects\\readme.md"
+                },
+                "meta": {
+                  "name": "txtReadme"
+                },
+                "position": {
+                  "basis": "10px",
+                  "grow": 1
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "config": {
+                        "path": "view.custom.editActive"
+                      },
+                      "type": "property"
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "path": "this.custom.readmeFile"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tif system.file.fileExists(value):\n\t   return system.file.readFileAsString(value)\n\t   \n\treturn \"\"",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "deferUpdates": false,
+                  "rejectUpdatesWhileFocused": false,
+                  "style": {
+                    "fontSize": "1.1em"
+                  }
+                },
+                "scripts": {
+                  "customMethods": [],
+                  "extensionFunctions": null,
+                  "messageHandlers": [
+                    {
+                      "messageType": "git-documentation-save",
+                      "pageScope": true,
+                      "script": "\tsystem.file.writeFile(self.custom.readmeFile, self.props.text)",
+                      "sessionScope": false,
+                      "viewScope": false
+                    },
+                    {
+                      "messageType": "git-documentation-project",
+                      "pageScope": true,
+                      "script": "\timport os\n\t\t\n\tself.custom.readmeFile \u003d os.path.join(payload[\"folder\"], payload[\"project\"], \"readme.md\")",
+                      "sessionScope": false,
+                      "viewScope": false
+                    },
+                    {
+                      "messageType": "markdown-insert",
+                      "pageScope": true,
+                      "script": "\tself.props.text +\u003d \"\\n\\n%s\" % (payload[\"text\"])",
+                      "sessionScope": false,
+                      "viewScope": false
+                    }
+                  ]
+                },
+                "type": "ia.input.text-area"
+              },
+              {
+                "meta": {
+                  "name": "separator_1"
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "config": {
+                        "expression": "{view.custom.editActive}\u0026\u0026{view.custom.previewActive}"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "action_button/seperator"
+                  }
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "mdReadme"
+                },
+                "position": {
+                  "basis": "10px",
+                  "grow": 1
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "config": {
+                        "expression": "{view.custom.previewActive}||!{view.custom.editActive}"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.source": {
+                    "binding": {
+                      "config": {
+                        "path": "../txtReadme.props.text"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "paddingLeft": 10
+                  }
+                },
+                "type": "ia.display.markdown"
+              }
+            ],
+            "meta": {
+              "name": "editor"
+            },
+            "position": {
+              "grow": 1
+            },
+            "props": {
+              "style": {
+                "borderStyle": "none"
+              }
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "sizing"
+        },
+        "position": {
+          "height": 1,
+          "width": 1
+        },
+        "props": {
+          "direction": "column"
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "mode": "percent"
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "git-documentation-toggle-edit-mode",
+          "pageScope": true,
+          "script": "\t# implement your handler here\n\tself.view.custom.editActive \u003d not self.view.custom.editActive\n\tself.view.custom.previewActive \u003d self.view.custom.previewActive or self.view.custom.editActive",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "git-documentation-toggle-preview-mode",
+          "pageScope": true,
+          "script": "\t# implement your handler here\n\tself.view.custom.previewActive \u003d not self.view.custom.previewActive",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "type": "ia.container.coord"
+  }
+}

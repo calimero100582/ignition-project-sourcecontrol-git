@@ -1,0 +1,51 @@
+{
+  "pages": {
+    "/setup": {
+      "viewPath": "setup",
+      "title": ""
+    },
+    "/documentation": {
+      "viewPath": "documentation",
+      "title": ""
+    },
+    "/": {
+      "viewPath": "index",
+      "title": ""
+    }
+  },
+  "sharedDocks": {
+    "cornerPriority": "top-bottom",
+    "left": [
+      {
+        "viewPath": "framework/main-menu",
+        "id": "",
+        "viewParams": {},
+        "size": 200,
+        "resizable": false,
+        "iconUrl": "",
+        "modal": false,
+        "show": "visible",
+        "anchor": "fixed",
+        "content": "push",
+        "autoBreakpoint": 480,
+        "handle": "hide"
+      }
+    ],
+    "top": [
+      {
+        "viewPath": "framework/main-header",
+        "id": "",
+        "viewParams": {},
+        "size": 25,
+        "resizable": false,
+        "iconUrl": "",
+        "modal": false,
+        "show": "visible",
+        "anchor": "fixed",
+        "content": "push",
+        "autoBreakpoint": 480,
+        "handle": "hide"
+      }
+    ]
+  }
+}

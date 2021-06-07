@@ -1,0 +1,115 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 322,
+      "width": 210
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "events": {
+          "component": {
+            "onItemClicked": [
+              {
+                "config": {
+                  "page": ""
+                },
+                "scope": "C",
+                "type": "nav"
+              },
+              {
+                "config": {
+                  "script": "\t"
+                },
+                "scope": "G",
+                "type": "script"
+              }
+            ]
+          }
+        },
+        "meta": {
+          "name": "MenuTree"
+        },
+        "position": {
+          "height": 1,
+          "width": 1
+        },
+        "props": {
+          "items": [
+            {
+              "enabled": true,
+              "items": [],
+              "label": {
+                "icon": {
+                  "path": "material/account_tree"
+                },
+                "text": "Source Control"
+              },
+              "navIcon": {
+                "color": "",
+                "path": ""
+              },
+              "showHeader": true,
+              "style": {
+                "classes": ""
+              },
+              "target": "/",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "items": [],
+              "label": {
+                "icon": {
+                  "path": "material/text_snippet"
+                },
+                "text": "Documentation"
+              },
+              "navIcon": {
+                "color": "",
+                "path": ""
+              },
+              "showHeader": true,
+              "style": {
+                "classes": ""
+              },
+              "target": "/documentation",
+              "visible": true
+            },
+            {
+              "enabled": true,
+              "items": [],
+              "label": {
+                "icon": {
+                  "path": "material/settings"
+                },
+                "text": "Setup"
+              },
+              "navIcon": {
+                "color": "",
+                "path": ""
+              },
+              "showHeader": true,
+              "style": {
+                "classes": ""
+              },
+              "target": "/setup",
+              "visible": true
+            }
+          ]
+        },
+        "type": "ia.navigation.menutree"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "mode": "percent"
+    },
+    "type": "ia.container.coord"
+  }
+}
