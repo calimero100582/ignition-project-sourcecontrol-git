@@ -817,52 +817,6 @@
               "placeholder": "password"
             },
             "type": "ia.input.password-field"
-          },
-          {
-            "events": {
-              "component": {
-                "onActionPerformed": {
-                  "config": {
-                    "script": "\timport java.io.File as File;\n\tfrom org.eclipse.jgit.api import Git\n\timport org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider as UsernamePasswordCredentialsProvider\n\timport os\n\n\tpath \u003d File(self.session.custom.projectsFolder)\n\tgit \u003d Git.open(path)\n\taddSubmoduleCommand \u003d git.submoduleAdd()\n\t\n\taddSubmoduleCommand.setURI(\"https://github.com/calimero100582/ignition-project-sourcecontrol-git.git\")\n\taddSubmoduleCommand.setPath(\"ignition-project-sourcecontrol-git\")\n\taddSubmoduleCommand.setCredentialsProvider( UsernamePasswordCredentialsProvider( \"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\", \"\") );\n\t\n\taddSubmoduleCommand.call()\n\tgit.close()\n\n\tsystem.perspective.sendMessage(\"git-setup-refresh\")"
-                  },
-                  "scope": "G",
-                  "type": "script"
-                }
-              }
-            },
-            "meta": {
-              "name": "Button"
-            },
-            "position": {
-              "breakpoints": [
-                {
-                  "colIndex": 9,
-                  "name": "sm",
-                  "order": 1,
-                  "rowIndex": 6,
-                  "span": 1
-                },
-                {
-                  "colIndex": 9,
-                  "name": "md",
-                  "order": 1,
-                  "rowIndex": 6,
-                  "span": 1
-                },
-                {
-                  "colIndex": 9,
-                  "name": "lg",
-                  "order": 1,
-                  "rowIndex": 6,
-                  "span": 3
-                }
-              ],
-              "height": 60
-            },
-            "props": {
-              "text": "Test Clone Submodule"
-            },
-            "type": "ia.input.button"
           }
         ],
         "meta": {
