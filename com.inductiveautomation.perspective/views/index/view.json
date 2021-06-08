@@ -219,13 +219,14 @@
                       "files": "{../tblFiles.props.data}",
                       "folder": "{session.custom.projectsFolder}",
                       "message": "{../txtCommitMessage.props.text}",
-                      "project": "{../dropProject.props.value}"
+                      "project": "{../dropProject.props.value}",
+                      "submodules": "{../dropProject.custom.submodules}"
                     },
                     "waitOnAll": true
                   },
                   "transforms": [
                     {
-                      "code": "\t\n\tfiles \u003d [f[\"value\"][\"file\"] for f in value[\"files\"] if f[\"value\"][\"status\"] !\u003d \"Missing\"]\n\tfiles.sort()\n\t\n\tremovedFiles \u003d [f[\"value\"][\"file\"] for f in value[\"files\"] if f[\"value\"][\"status\"] \u003d\u003d \"Missing\"]\n\tremovedFiles.sort()\n\t\n\treturn {\n\t\t\"message\": value.message,\n\t\t\"authorEmail\": value.authorEmail,\n\t\t\"authorName\": value.authorName,\n\t\t\"folder\": value.folder,\n\t\t\"project\": value.project,\n\t\t\"files\": files,\n\t\t\"removedFiles\": removedFiles\n\t}",
+                      "code": "\t\n\tfiles \u003d [f[\"value\"][\"file\"] for f in value[\"files\"] if f[\"value\"][\"status\"] !\u003d \"Missing\"]\n\tfiles.sort()\n\t\n\tremovedFiles \u003d [f[\"value\"][\"file\"] for f in value[\"files\"] if f[\"value\"][\"status\"] \u003d\u003d \"Missing\"]\n\tremovedFiles.sort()\n\t\n\treturn {\n\t\t\"message\": value.message,\n\t\t\"authorEmail\": value.authorEmail,\n\t\t\"authorName\": value.authorName,\n\t\t\"folder\": value.folder,\n\t\t\"project\": value.project,\n\t\t\"files\": files,\n\t\t\"removedFiles\": removedFiles,\n\t\t\"isSubmodule\": value.project in value.submodules\n\t}",
                       "type": "script"
                     }
                   ],
@@ -261,7 +262,7 @@
                 {
                   "messageType": "git-commit-push",
                   "pageScope": true,
-                  "script": "\t# implement your handler here\n\timport java.io.File as File;\n\timport org.eclipse.jgit.api.Git as Git;\n\t\t\n\tpath \u003d File(payload.folder)\n\tgit \u003d Git.open(path)\n\n\tif len(payload.files) \u003e 0:\n\t\taddCommand \u003d git.add()\n\t\n\t\tfor file in payload.files:\n\t\t\taddCommand \u003d addCommand.addFilepattern(file)\n\t\t\n\t\taddCommand.call()\n\n\tif len(payload.removedFiles) \u003e 0:\n\t\tremoveCommand \u003d git.rm()\n\t\n\t\tfor file in payload.removedFiles:\n\t\t\tremoveCommand \u003d removeCommand.addFilepattern(file)\n\n\t\tremoveCommand.call()\n\t\n\trevcommit \u003d git.commit().setAuthor(payload.authorName, payload.authorEmail).setMessage(payload.message).call();\n\t\n\tsystem.perspective.sendMessage(\"git-commit-revcommit\", {\"commit\": revcommit})",
+                  "script": "\t# implement your handler here\n\timport java.io.File as File;\n\tfrom org.eclipse.jgit.api import Git;\n\tfrom org.eclipse.jgit.submodule import SubmoduleWalk\n\t\t\n\tpath \u003d File(payload.folder)\n\tgit \u003d Git.open(path) if not payload.isSubmodule else Git.wrap(SubmoduleWalk.getSubmoduleRepository(path, payload.project))\n\n\tif len(payload.files) \u003e 0:\n\t\taddCommand \u003d git.add()\n\t\n\t\tfor file in payload.files:\n\t\t\taddCommand \u003d addCommand.addFilepattern(file)\n\t\t\n\t\taddCommand.call()\n\n\tif len(payload.removedFiles) \u003e 0:\n\t\tremoveCommand \u003d git.rm()\n\t\n\t\tfor file in payload.removedFiles:\n\t\t\tremoveCommand \u003d removeCommand.addFilepattern(file)\n\n\t\tremoveCommand.call()\n\t\n\trevcommit \u003d git.commit().setAuthor(payload.authorName, payload.authorEmail).setMessage(payload.message).call();\n\t\n\tsystem.perspective.sendMessage(\"git-commit-revcommit\", {\"commit\": revcommit})",
                   "sessionScope": false,
                   "viewScope": false
                 }
@@ -468,16 +469,6 @@
               "pager": {
                 "bottom": false,
                 "initialOption": 99999999
-              },
-              "selection": {
-                "data": [
-                  {
-                    "file": "com.inductiveautomation.perspective/views/index/view.json",
-                    "status": "Modified"
-                  }
-                ],
-                "selectedColumn": "file",
-                "selectedRow": 2
               }
             },
             "scripts": {

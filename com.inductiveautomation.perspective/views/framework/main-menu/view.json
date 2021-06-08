@@ -10,26 +10,6 @@
   "root": {
     "children": [
       {
-        "events": {
-          "component": {
-            "onItemClicked": [
-              {
-                "config": {
-                  "page": ""
-                },
-                "scope": "C",
-                "type": "nav"
-              },
-              {
-                "config": {
-                  "script": "\t"
-                },
-                "scope": "G",
-                "type": "script"
-              }
-            ]
-          }
-        },
         "meta": {
           "name": "MenuTree"
         },
