@@ -49,7 +49,7 @@ The following code works, but return "not authorized" on Github, with token, eve
 	import os
 
 	path = File(self.session.custom.projectsFolder)
-	git = Git.wrap(SubmoduleWalk.getSubmoduleRepository(path, "ignition-project-sourcecontrol-git"))
+	git = Git.wrap(SubmoduleWalk.getSubmoduleRepository(path, "<submodule name / project folder>"))
 
 	pushCommand = git.push()
 	pushCommand = pushCommand.setCredentialsProvider( UsernamePasswordCredentialsProvider("<username or github token>", "<password or azure devops token>"));
