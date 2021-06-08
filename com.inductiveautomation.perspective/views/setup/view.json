@@ -122,7 +122,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\timport java.io.File as File;\n\timport org.eclipse.jgit.api.Git as Git;\n\n\tpath \u003d File(self.session.custom.projectsFolder)\n\t\n\ttry:\n\t\treturn not Git.open(path).getRepository().getObjectDatabase().exists()\n\texcept:\n\t\treturn True",
+                      "code": "\timport java.io.File as File;\n\timport org.eclipse.jgit.api.Git as Git;\n\n\tpath \u003d File(self.session.custom.projectsFolder)\n\tgit \u003d Git.open(path)\n\tenabled \u003d True\n\t\n\ttry:\n\t\tenabled \u003d not git.getRepository().getObjectDatabase().exists()\n\texcept:\n\t\tenabled \u003d True\n\t\n\tgit.close()\n\treturn enabled",
                       "type": "script"
                     }
                   ],
@@ -570,7 +570,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\timport java.io.File as File;\n\timport org.eclipse.jgit.api.Git as Git;\n\n\tpath \u003d File(self.session.custom.projectsFolder)\n\t\n\tbranches \u003d [{\"value\": b.getName().replace(\u0027refs/heads/\u0027,\u0027\u0027), \"label\": b.getName()} for b in Git.open(path).branchList().call()]\n\t\n\treturn branches",
+                      "code": "\timport java.io.File as File;\n\timport org.eclipse.jgit.api.Git as Git;\n\n\tpath \u003d File(self.session.custom.projectsFolder)\n\tgit \u003d Git.open(path)\n\t\n\tbranches \u003d [{\"value\": b.getName().replace(\u0027refs/heads/\u0027,\u0027\u0027), \"label\": b.getName()} for b in git.branchList().call()]\n\tgit.close()\n\t\n\treturn branches",
                       "type": "script"
                     }
                   ],
@@ -584,7 +584,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\timport java.io.File as File;\n\timport org.eclipse.jgit.api.Git as Git;\n\n\tpath \u003d File(self.session.custom.projectsFolder)\n\t\n\treturn Git.open(path).getRepository().getBranch()",
+                      "code": "\timport java.io.File as File;\n\timport org.eclipse.jgit.api.Git as Git;\n\n\tpath \u003d File(self.session.custom.projectsFolder)\n\tgit \u003d Git.open(path)\n\t\n\tbranch \u003d git.getRepository().getBranch()\n\tgit.close()\n\t\n\treturn branch",
                       "type": "script"
                     }
                   ],
@@ -823,7 +823,7 @@
               "component": {
                 "onActionPerformed": {
                   "config": {
-                    "script": "\timport java.io.File as File;\n\tfrom org.eclipse.jgit.api import Git\n\timport org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider as UsernamePasswordCredentialsProvider\n\timport os\n\n\tpath \u003d File(self.session.custom.projectsFolder)\n\tgit \u003d Git.open(path)\n\taddSubmoduleCommand \u003d git.submoduleAdd()\n\t\n\taddSubmoduleCommand.setURI(\"https://github.com/calimero100582/ignition-project-sourcecontrol-git.git\")\n\taddSubmoduleCommand.setPath(\"ignition-project-sourcecontrol-git\")\n\taddSubmoduleCommand.setCredentialsProvider( UsernamePasswordCredentialsProvider( \"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\", \"\") );\n\t\n\taddSubmoduleCommand.call()\n\n\tsystem.perspective.sendMessage(\"git-setup-refresh\")"
+                    "script": "\timport java.io.File as File;\n\tfrom org.eclipse.jgit.api import Git\n\timport org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider as UsernamePasswordCredentialsProvider\n\timport os\n\n\tpath \u003d File(self.session.custom.projectsFolder)\n\tgit \u003d Git.open(path)\n\taddSubmoduleCommand \u003d git.submoduleAdd()\n\t\n\taddSubmoduleCommand.setURI(\"https://github.com/calimero100582/ignition-project-sourcecontrol-git.git\")\n\taddSubmoduleCommand.setPath(\"ignition-project-sourcecontrol-git\")\n\taddSubmoduleCommand.setCredentialsProvider( UsernamePasswordCredentialsProvider( \"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\", \"\") );\n\t\n\taddSubmoduleCommand.call()\n\tgit.close()\n\n\tsystem.perspective.sendMessage(\"git-setup-refresh\")"
                   },
                   "scope": "G",
                   "type": "script"

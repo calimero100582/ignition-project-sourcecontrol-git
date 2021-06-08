@@ -75,7 +75,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\timport java.io.File as File\n\timport org.eclipse.jgit.api.Git as Git\n\t\n\tpath \u003d File(value.folder)\n\tgit \u003d Git.open(path)\n\t\n\treturn [x for x in git.submoduleStatus().call()]",
+                      "code": "\timport java.io.File as File\n\timport org.eclipse.jgit.api.Git as Git\n\t\n\tpath \u003d File(value.folder)\n\tgit \u003d Git.open(path)\n\t\n\tsubmodules \u003d [x for x in git.submoduleStatus().call()]\n\tgit.close()\n\t\n\treturn submodules",
                       "type": "script"
                     }
                   ],
@@ -262,7 +262,7 @@
                 {
                   "messageType": "git-commit-push",
                   "pageScope": true,
-                  "script": "\t# implement your handler here\n\timport java.io.File as File;\n\tfrom org.eclipse.jgit.api import Git;\n\tfrom org.eclipse.jgit.submodule import SubmoduleWalk\n\t\t\n\tpath \u003d File(payload.folder)\n\tgit \u003d Git.open(path) if not payload.isSubmodule else Git.wrap(SubmoduleWalk.getSubmoduleRepository(path, payload.project))\n\n\tif len(payload.files) \u003e 0:\n\t\taddCommand \u003d git.add()\n\t\n\t\tfor file in payload.files:\n\t\t\taddCommand \u003d addCommand.addFilepattern(file)\n\t\t\n\t\taddCommand.call()\n\n\tif len(payload.removedFiles) \u003e 0:\n\t\tremoveCommand \u003d git.rm()\n\t\n\t\tfor file in payload.removedFiles:\n\t\t\tremoveCommand \u003d removeCommand.addFilepattern(file)\n\n\t\tremoveCommand.call()\n\t\n\trevcommit \u003d git.commit().setAuthor(payload.authorName, payload.authorEmail).setMessage(payload.message).call();\n\t\n\tsystem.perspective.sendMessage(\"git-commit-revcommit\", {\"commit\": revcommit})",
+                  "script": "\t# implement your handler here\n\timport java.io.File as File;\n\tfrom org.eclipse.jgit.api import Git;\n\tfrom org.eclipse.jgit.submodule import SubmoduleWalk\n\t\t\n\tpath \u003d File(payload.folder)\n\tgit \u003d Git.open(path) if not payload.isSubmodule else Git.wrap(SubmoduleWalk.getSubmoduleRepository(path, payload.project))\n\n\tif len(payload.files) \u003e 0:\n\t\taddCommand \u003d git.add()\n\t\n\t\tfor file in payload.files:\n\t\t\taddCommand \u003d addCommand.addFilepattern(file)\n\t\t\n\t\taddCommand.call()\n\n\tif len(payload.removedFiles) \u003e 0:\n\t\tremoveCommand \u003d git.rm()\n\t\n\t\tfor file in payload.removedFiles:\n\t\t\tremoveCommand \u003d removeCommand.addFilepattern(file)\n\n\t\tremoveCommand.call()\n\t\n\trevcommit \u003d git.commit().setAuthor(payload.authorName, payload.authorEmail).setMessage(payload.message).call();\n\t\n\tgit.close()\n\tsystem.perspective.sendMessage(\"git-commit-revcommit\", {\"commit\": revcommit})",
                   "sessionScope": false,
                   "viewScope": false
                 }
@@ -528,7 +528,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\timport java.io.File as File;\n\timport org.eclipse.jgit.api.Git as Git;\n\t\n\tpath \u003d File(value.folder)\n\tgit \u003d Git.open(path)\n\trepository \u003d git.getRepository()\n\theadObject \u003d repository.readOrigHead()\n\t\n\tdiff \u003d git.diff().call()\n\t\n\treturn diff",
+                      "code": "\timport java.io.File as File;\n\timport org.eclipse.jgit.api.Git as Git;\n\t\n\tpath \u003d File(value.folder)\n\tgit \u003d Git.open(path)\n\trepository \u003d git.getRepository()\n\theadObject \u003d repository.readOrigHead()\n\t\n\tdiff \u003d git.diff().call()\n\t\n\tgit.close()\n\t\n\treturn diff",
                       "type": "script"
                     }
                   ],
