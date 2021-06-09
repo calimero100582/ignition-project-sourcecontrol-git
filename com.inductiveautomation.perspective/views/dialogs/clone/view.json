@@ -1,0 +1,50 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 190,
+      "width": 440
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "cloneView"
+        },
+        "position": {
+          "height": 1,
+          "width": 1
+        },
+        "props": {
+          "path": "dialogs/template/clone"
+        },
+        "type": "ia.display.view"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "mode": "percent",
+      "style": {
+        "margin": 10
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "git-dialog-clone",
+          "pageScope": true,
+          "script": "\t# implement your handler here",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "type": "ia.container.coord"
+  }
+}

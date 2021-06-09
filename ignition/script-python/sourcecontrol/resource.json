@@ -1,0 +1,16 @@
+{
+  "scope": "A",
+  "version": 1,
+  "restricted": false,
+  "overridable": true,
+  "files": [
+    "code.py"
+  ],
+  "attributes": {
+    "lastModification": {
+      "actor": "calimero100582",
+      "timestamp": "2021-06-09T20:47:05Z"
+    },
+    "lastModificationSignature": "c3ccc8d61d896b1dacac535e9dc01eec8e07e6256fb62507bb45b42d761e0733"
+  }
+}

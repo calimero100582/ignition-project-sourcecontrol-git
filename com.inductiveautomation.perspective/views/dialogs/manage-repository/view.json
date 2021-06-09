@@ -1,0 +1,398 @@
+{
+  "custom": {
+    "payload": {
+      "folder": "C:\\Program Files\\Inductive Automation\\Ignition\\data\\projects",
+      "submodule": ""
+    }
+  },
+  "params": {
+    "submodule": ""
+  },
+  "propConfig": {
+    "custom.payload": {
+      "binding": {
+        "config": {
+          "struct": {
+            "folder": "{session.custom.projectsFolder}",
+            "submodule": "{view.params.submodule}"
+          },
+          "waitOnAll": true
+        },
+        "type": "expr-struct"
+      },
+      "persistent": true
+    },
+    "params.submodule": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 215,
+      "width": 398
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "custom": {
+              "messageHandler": "git-setup-fetch"
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tsystem.perspective.sendMessage(self.custom.messageHandler, self.custom.payload)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "btnFetch"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 0,
+                  "span": 12
+                },
+                {
+                  "colIndex": 0,
+                  "name": "md",
+                  "order": 1,
+                  "rowIndex": 0,
+                  "span": 4
+                },
+                {
+                  "colIndex": 0,
+                  "name": "lg",
+                  "order": 0.5,
+                  "rowIndex": 0,
+                  "span": 4
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "text": "Fetch origin"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "custom": {
+              "messageHandler": "git-setup-pull"
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tsystem.perspective.sendMessage(self.custom.messageHandler, self.custom.payload)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "btnPull"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 1,
+                  "span": 12
+                },
+                {
+                  "colIndex": 4,
+                  "name": "md",
+                  "order": 1.5,
+                  "rowIndex": 0,
+                  "span": 4
+                },
+                {
+                  "colIndex": 4,
+                  "name": "lg",
+                  "order": 1.5,
+                  "rowIndex": 0,
+                  "span": 4
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "text": "Pull origin"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "custom": {
+              "messageHandler": "git-setup-push"
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tsystem.perspective.sendMessage(self.custom.messageHandler, self.custom.payload)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "btnPush"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 2,
+                  "span": 12
+                },
+                {
+                  "colIndex": 8,
+                  "name": "md",
+                  "order": 2,
+                  "rowIndex": 0,
+                  "span": 4
+                },
+                {
+                  "colIndex": 8,
+                  "name": "lg",
+                  "order": 2,
+                  "rowIndex": 0,
+                  "span": 4
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "text": "Push origin"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "meta": {
+              "name": "lblBranch"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 3,
+                  "span": 3
+                },
+                {
+                  "colIndex": 0,
+                  "name": "md",
+                  "order": 1,
+                  "rowIndex": 1,
+                  "span": 2
+                },
+                {
+                  "colIndex": 0,
+                  "name": "lg",
+                  "order": 1,
+                  "rowIndex": 1,
+                  "span": 2
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "style": {
+                "textAlign": "right"
+              },
+              "text": "Branch"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "dropBranch"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 3,
+                  "name": "sm",
+                  "order": 1.5,
+                  "rowIndex": 3,
+                  "span": 9
+                },
+                {
+                  "colIndex": 2,
+                  "name": "md",
+                  "order": 1.5,
+                  "rowIndex": 1,
+                  "span": 4
+                },
+                {
+                  "colIndex": 2,
+                  "name": "lg",
+                  "order": 1.5,
+                  "rowIndex": 1,
+                  "span": 6
+                }
+              ],
+              "height": 35
+            },
+            "propConfig": {
+              "custom.payload": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "folder": "{session.custom.projectsFolder}",
+                      "submodule": "{view.params.submodule}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "type": "expr-struct"
+                }
+              },
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "folder": "{session.custom.projectsFolder}",
+                      "submodule": "{view.params.submodule}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tgitBranches \u003d sourcecontrol.getListBranch(value.folder, value.submodule)\n\tbranches \u003d [{\"value\": b.getName(), \"label\": b.getName()} for b in gitBranches]\n\n\treturn branches",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              },
+              "props.value": {
+                "binding": {
+                  "config": {
+                    "path": "session.custom.projectsFolder"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\treturn sourcecontrol.getCurrentBranch(value, \"\")",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "allowCustomOptions": true
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "meta": {
+              "name": "btnCheckoutBranch"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 4,
+                  "span": 6
+                },
+                {
+                  "colIndex": 6,
+                  "name": "md",
+                  "order": 2,
+                  "rowIndex": 1,
+                  "span": 3
+                },
+                {
+                  "colIndex": 8,
+                  "name": "lg",
+                  "order": 2,
+                  "rowIndex": 1,
+                  "span": 2
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "text": "Checkout"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "meta": {
+              "name": "btnCreateBranch"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 6,
+                  "name": "sm",
+                  "order": 1.5,
+                  "rowIndex": 4,
+                  "span": 6
+                },
+                {
+                  "colIndex": 9,
+                  "name": "md",
+                  "order": 2.5,
+                  "rowIndex": 1,
+                  "span": 3
+                },
+                {
+                  "colIndex": 10,
+                  "name": "lg",
+                  "order": 2.5,
+                  "rowIndex": 1,
+                  "span": 2
+                }
+              ],
+              "height": 35
+            },
+            "props": {
+              "text": "Create"
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "sizing"
+        },
+        "position": {
+          "height": 1,
+          "width": 1
+        },
+        "type": "ia.container.column"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "mode": "percent",
+      "style": {
+        "margin": 10
+      }
+    },
+    "type": "ia.container.coord"
+  }
+}

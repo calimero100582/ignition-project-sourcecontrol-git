@@ -1,0 +1,197 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {},
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "txtCloneUri"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 0,
+                  "span": 12
+                },
+                {
+                  "colIndex": 0,
+                  "name": "md",
+                  "order": 1,
+                  "rowIndex": 0,
+                  "span": 12
+                },
+                {
+                  "colIndex": 0,
+                  "name": "lg",
+                  "order": 1,
+                  "rowIndex": 0,
+                  "span": 12
+                }
+              ],
+              "height": 40
+            },
+            "props": {
+              "deferUpdates": false,
+              "placeholder": "Enter remote Uri to clone",
+              "rejectUpdatesWhileFocused": false
+            },
+            "type": "ia.input.text-field"
+          },
+          {
+            "meta": {
+              "name": "txtCloneUsername"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 1,
+                  "span": 12
+                },
+                {
+                  "colIndex": 0,
+                  "name": "md",
+                  "order": 1,
+                  "rowIndex": 1,
+                  "span": 6
+                },
+                {
+                  "colIndex": 0,
+                  "name": "lg",
+                  "order": 1,
+                  "rowIndex": 1,
+                  "span": 6
+                }
+              ],
+              "height": 40
+            },
+            "props": {
+              "placeholder": "username"
+            },
+            "type": "ia.input.text-field"
+          },
+          {
+            "meta": {
+              "name": "txtClonePassword"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 2,
+                  "span": 12
+                },
+                {
+                  "colIndex": 6,
+                  "name": "md",
+                  "order": 1.5,
+                  "rowIndex": 1,
+                  "span": 6
+                },
+                {
+                  "colIndex": 6,
+                  "name": "lg",
+                  "order": 1.5,
+                  "rowIndex": 1,
+                  "span": 6
+                }
+              ],
+              "height": 40
+            },
+            "props": {
+              "placeholder": "password"
+            },
+            "type": "ia.input.password-field"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tsystem.perspective.sendMessage(\"git-dialog-clone\", self.custom.payload)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "btnCloneRepo"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 3,
+                  "span": 12
+                },
+                {
+                  "colIndex": 0,
+                  "name": "md",
+                  "order": 1,
+                  "rowIndex": 2,
+                  "span": 12
+                },
+                {
+                  "colIndex": 0,
+                  "name": "lg",
+                  "order": 1,
+                  "rowIndex": 2,
+                  "span": 12
+                }
+              ],
+              "height": 40
+            },
+            "propConfig": {
+              "custom.payload": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "folder": "{session.custom.projectsFolder}",
+                      "password": "{../txtClonePassword.props.text}",
+                      "uri": "{../txtCloneUri.props.text}",
+                      "username": "{../txtCloneUsername.props.text}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "type": "expr-struct"
+                }
+              }
+            },
+            "props": {
+              "text": "Clone"
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "sizing"
+        },
+        "position": {
+          "height": 1,
+          "width": 1
+        },
+        "type": "ia.container.column"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "mode": "percent"
+    },
+    "type": "ia.container.coord"
+  }
+}

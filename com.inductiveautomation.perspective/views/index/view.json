@@ -75,7 +75,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\timport java.io.File as File\n\timport org.eclipse.jgit.api.Git as Git\n\t\n\tpath \u003d File(value.folder)\n\tgit \u003d Git.open(path)\n\t\n\tsubmodules \u003d [x for x in git.submoduleStatus().call()]\n\tgit.close()\n\t\n\treturn submodules",
+                      "code": "\treturn [x for x in sourcecontrol.getListSubmodule(value.folder, \"\")]",
                       "type": "script"
                     }
                   ],
@@ -89,7 +89,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\timport os\n\t\n\tprojects \u003d system.project.getProjectNames()\n\tprojects.sort()\n\t\n\treturn [{\"value\": \"\", \"label\": \"Global\"}] + [{\"value\": x, \"label\": x + (\" \u003csubmodule\u003e\" if x in value else \"\")} for x in projects]",
+                      "code": "\tprojects \u003d system.project.getProjectNames()\n\tprojects.sort()\n\t\n\treturn [{\"value\": \"\", \"label\": \"Global\"}] + [{\"value\": x, \"label\": x + (\" \u003csubmodule\u003e\" if x in value else \"\")} for x in projects]",
                       "type": "script"
                     }
                   ],
@@ -186,25 +186,25 @@
             "position": {
               "breakpoints": [
                 {
-                  "colIndex": 0,
+                  "colIndex": 2,
                   "name": "sm",
                   "order": 2,
-                  "rowIndex": 4,
-                  "span": 12
+                  "rowIndex": 2,
+                  "span": 7
                 },
                 {
-                  "colIndex": 3,
+                  "colIndex": 2,
                   "name": "md",
                   "order": 2,
                   "rowIndex": 2,
-                  "span": 9
+                  "span": 7
                 },
                 {
                   "colIndex": 2,
                   "name": "lg",
                   "order": 2,
                   "rowIndex": 2,
-                  "span": 10
+                  "span": 7
                 }
               ],
               "height": 38
@@ -253,7 +253,7 @@
               }
             },
             "props": {
-              "text": "Commit \u003c\u0026 eventually Push\u003e"
+              "text": "Commit"
             },
             "scripts": {
               "customMethods": [],
@@ -262,7 +262,7 @@
                 {
                   "messageType": "git-commit-push",
                   "pageScope": true,
-                  "script": "\t# implement your handler here\n\timport java.io.File as File;\n\tfrom org.eclipse.jgit.api import Git;\n\tfrom org.eclipse.jgit.submodule import SubmoduleWalk\n\t\t\n\tpath \u003d File(payload.folder)\n\tgit \u003d Git.open(path) if not payload.isSubmodule else Git.wrap(SubmoduleWalk.getSubmoduleRepository(path, payload.project))\n\n\tif len(payload.files) \u003e 0:\n\t\taddCommand \u003d git.add()\n\t\n\t\tfor file in payload.files:\n\t\t\taddCommand \u003d addCommand.addFilepattern(file)\n\t\t\n\t\taddCommand.call()\n\n\tif len(payload.removedFiles) \u003e 0:\n\t\tremoveCommand \u003d git.rm()\n\t\n\t\tfor file in payload.removedFiles:\n\t\t\tremoveCommand \u003d removeCommand.addFilepattern(file)\n\n\t\tremoveCommand.call()\n\t\n\trevcommit \u003d git.commit().setAuthor(payload.authorName, payload.authorEmail).setMessage(payload.message).call();\n\t\n\tgit.close()\n\tsystem.perspective.sendMessage(\"git-commit-revcommit\", {\"commit\": revcommit})",
+                  "script": "\trevcommit \u003d sourcecontrol.Commit(payload.folder, payload.project if payload.isSubmodule else \"\", payload.files, payload.removedFiles, payload.authorName, payload.authorEmail, payload.message)\n\tsystem.perspective.sendMessage(\"git-commit-revcommit\", {\"commit\": revcommit})",
                   "sessionScope": false,
                   "viewScope": false
                 }
@@ -313,7 +313,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\timport java.io.File as File\n\timport os\n\tfrom org.eclipse.jgit.api import Git\n\tfrom org.eclipse.jgit.submodule import SubmoduleWalk\n\tfrom org.eclipse.jgit.submodule.SubmoduleWalk import IgnoreSubmoduleMode\n\n\tpath \u003d File(value.folder)\n\t\n\tisSubmodule \u003d value.project in value.submodules\n\n\tgit \u003d Git.open(path) if not isSubmodule else Git.wrap(SubmoduleWalk.getSubmoduleRepository(path, value.project))\n\t\t\n\tstatusCmd \u003d git.status()\n\t\n\tisProject \u003d len(value.project) \u003e 0 and not isSubmodule\n\t\n\tif isProject:\n\t\tstatusCmd \u003d statusCmd.addPath(value.project)\n\t\n\tstatus \u003d statusCmd.call()\n\t\n\tfileStatus \u003d {\n\t\t#\"UncommitedChanged\": list(status.getUncommittedChanges()),\n\t\t\"Added\": list(status.getAdded()),\n\t\t\"Changed\": list(status.getChanged()),\n\t\t\"Conflicting\": list(status.getConflicting()),\n\t\t#\"Ignored\": list(status.getIgnoredNotInIndex()),\n\t\t\"Missing\": list(status.getMissing()),\n\t\t\"Modified\": list(status.getModified()),\n\t\t\"Removed\": list(status.getRemoved()),\n\t\t\"Untracked\": list(status.getUntracked())\n\t}\n\t\n\tgit.close()\n\t\n\tfiles \u003d {}\n\tfor key in fileStatus:\n\t\tfor file in fileStatus[key]:\n\t\t\tif isSubmodule or (isProject and file.startswith(value.project)) or (not isProject and not \"/\" in file):\n\t\t\t\tfiles[file] \u003d key\n\t\n\tresult \u003d []\n\tfor file in files:\n\t\tresult.append({\"file\": file, \"status\": files[file]})\n\t\t\n\tdiff \u003d [{\"value\": file, \"style\": {\"classes\": \"git_filestatus git_filestatus_\" + file[\"status\"]}} for file in result]\n\tdiff.sort()\n\t\n\treturn diff",
+                      "code": "\tsubmodule \u003d value.project if value.project in value.submodules else \"\"\n\tproject \u003d value.project if not submodule else \"\"\n\t\n\tstatus \u003d sourcecontrol.Status(value.folder, submodule, project)\n\t\n\tfileStatus \u003d {\n\t\t#\"UncommitedChanged\": list(status.getUncommittedChanges()),\n\t\t\"Added\": list(status.getAdded()),\n\t\t\"Changed\": list(status.getChanged()),\n\t\t\"Conflicting\": list(status.getConflicting()),\n\t\t#\"Ignored\": list(status.getIgnoredNotInIndex()),\n\t\t\"Missing\": list(status.getMissing()),\n\t\t\"Modified\": list(status.getModified()),\n\t\t\"Removed\": list(status.getRemoved()),\n\t\t\"Untracked\": list(status.getUntracked())\n\t}\n\t\t\n\tfiles \u003d {}\n\tfor key in fileStatus:\n\t\tfor file in fileStatus[key]:\n\t\t\tif submodule or (project and file.startswith(project)) or (not project and not \"/\" in file):\n\t\t\t\tfiles[file] \u003d key\n\t\n\tresult \u003d []\n\tfor file in files:\n\t\tresult.append({\"file\": file, \"status\": files[file]})\n\t\t\n\tdiff \u003d [{\"value\": file, \"style\": {\"classes\": \"git_filestatus git_filestatus_\" + file[\"status\"]}} for file in result]\n\tdiff.sort()\n\t\n\treturn diff",
                       "type": "script"
                     }
                   ],
@@ -515,26 +515,6 @@
                 }
               ],
               "height": 261
-            },
-            "propConfig": {
-              "props.data": {
-                "binding": {
-                  "config": {
-                    "struct": {
-                      "file": "{../tblFiles.props.selection.data[0].file}",
-                      "folder": "{session.custom.projectsFolder}"
-                    },
-                    "waitOnAll": true
-                  },
-                  "transforms": [
-                    {
-                      "code": "\timport java.io.File as File;\n\timport org.eclipse.jgit.api.Git as Git;\n\t\n\tpath \u003d File(value.folder)\n\tgit \u003d Git.open(path)\n\trepository \u003d git.getRepository()\n\theadObject \u003d repository.readOrigHead()\n\t\n\tdiff \u003d git.diff().call()\n\t\n\tgit.close()\n\t\n\treturn diff",
-                      "type": "script"
-                    }
-                  ],
-                  "type": "expr-struct"
-                }
-              }
             },
             "props": {
               "cells": {
@@ -870,6 +850,73 @@
               "text": "Diff \u003cnot implemented yet\u003e"
             },
             "type": "ia.display.label"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tsourcecontrol.Push(self.custom.payload.folder, self.custom.payload.submodule)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "btnPush"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 10,
+                  "name": "sm",
+                  "order": 3,
+                  "rowIndex": 2,
+                  "span": 1
+                },
+                {
+                  "colIndex": 10,
+                  "name": "md",
+                  "order": 3,
+                  "rowIndex": 2,
+                  "span": 1
+                },
+                {
+                  "colIndex": 9,
+                  "name": "lg",
+                  "order": 3,
+                  "rowIndex": 2,
+                  "span": 3
+                }
+              ],
+              "height": 38
+            },
+            "propConfig": {
+              "custom.payload": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "folder": "{session.custom.projectsFolder}",
+                      "project": "{../dropProject.props.value}",
+                      "submodules": "{../dropProject.custom.submodules}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "transforms": [
+                    {
+                      "code": "\treturn {\n\t\t\"folder\": value.folder,\n\t\t\"submodule\": value.project if value.project in value.submodules else \"\"\n\t}",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              }
+            },
+            "props": {
+              "text": "Push"
+            },
+            "type": "ia.input.button"
           }
         ],
         "meta": {

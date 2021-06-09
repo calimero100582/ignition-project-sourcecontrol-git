@@ -1,0 +1,119 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 240,
+      "width": 440
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "txtSubmodule"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 0,
+                  "span": 12
+                },
+                {
+                  "colIndex": 4,
+                  "name": "md",
+                  "order": 1,
+                  "rowIndex": 0,
+                  "span": 1
+                },
+                {
+                  "colIndex": 4,
+                  "name": "lg",
+                  "order": 1,
+                  "rowIndex": 0,
+                  "span": 1
+                }
+              ],
+              "height": 40
+            },
+            "props": {
+              "placeholder": "Enter submodule name"
+            },
+            "scripts": {
+              "customMethods": [],
+              "extensionFunctions": null,
+              "messageHandlers": [
+                {
+                  "messageType": "git-dialog-clone",
+                  "pageScope": true,
+                  "script": "\t# implement your handler here\n\t",
+                  "sessionScope": false,
+                  "viewScope": false
+                }
+              ]
+            },
+            "type": "ia.input.text-field"
+          },
+          {
+            "meta": {
+              "name": "cloneView"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 1,
+                  "span": 12
+                },
+                {
+                  "colIndex": 0,
+                  "name": "md",
+                  "order": 1,
+                  "rowIndex": 1,
+                  "span": 1
+                },
+                {
+                  "colIndex": 0,
+                  "name": "lg",
+                  "order": 1,
+                  "rowIndex": 1,
+                  "span": 1
+                }
+              ],
+              "height": 190
+            },
+            "props": {
+              "path": "dialogs/template/clone"
+            },
+            "type": "ia.display.view"
+          }
+        ],
+        "meta": {
+          "name": "sizing"
+        },
+        "position": {
+          "height": 1,
+          "width": 1
+        },
+        "type": "ia.container.column"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "mode": "percent",
+      "style": {
+        "margin": 10
+      }
+    },
+    "type": "ia.container.coord"
+  }
+}
