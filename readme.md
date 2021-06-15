@@ -37,21 +37,3 @@ The goal of this project is to be able to manage and version Ignition's projects
 	
 	addSubmoduleCommand.call()
 	git.close()
-
-
-### Code to push submodule
-The following code works, but return "not authorized" on Github, with token, even if the push succeed
-
-	import java.io.File as File;
-	from org.eclipse.jgit.api import Git
-	from org.eclipse.jgit.submodule import SubmoduleWalk
-	import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider as UsernamePasswordCredentialsProvider
-	import os
-
-	path = File(self.session.custom.projectsFolder)
-	git = Git.wrap(SubmoduleWalk.getSubmoduleRepository(path, "<submodule name / project folder>"))
-
-	pushCommand = git.push()
-	pushCommand = pushCommand.setCredentialsProvider( UsernamePasswordCredentialsProvider("<username or github token>", "<password or azure devops token>"));
-	pushCommand.call()
-	git.close()
