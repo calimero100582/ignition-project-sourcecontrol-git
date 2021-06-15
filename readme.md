@@ -8,7 +8,7 @@ The goal of this project is to be able to manage and version Ignition's projects
 - [x]  Commit by project
 - [x]  Ignition Project Readme.md creator/editor
 - [x]  Projects folder remote setup
-- [ ]  Fetch, Pull and Push
+- [x]  Fetch, Pull and Push
 - [ ]  Branch management
 - [ ]  Commit history view
 - [ ]  Rollback/Reset/Revert
