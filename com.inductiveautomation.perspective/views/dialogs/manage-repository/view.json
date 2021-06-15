@@ -1,25 +1,12 @@
 {
-  "custom": {
-    "payload": {
-      "folder": "C:\\Program Files\\Inductive Automation\\Ignition\\data\\projects",
-      "submodule": ""
-    }
-  },
+  "custom": {},
   "params": {
+    "folder": "C:\\Program Files\\Inductive Automation\\Ignition\\data\\projects",
     "submodule": ""
   },
   "propConfig": {
-    "custom.payload": {
-      "binding": {
-        "config": {
-          "struct": {
-            "folder": "{session.custom.projectsFolder}",
-            "submodule": "{view.params.submodule}"
-          },
-          "waitOnAll": true
-        },
-        "type": "expr-struct"
-      },
+    "params.folder": {
+      "paramDirection": "input",
       "persistent": true
     },
     "params.submodule": {
@@ -81,6 +68,20 @@
               ],
               "height": 35
             },
+            "propConfig": {
+              "custom.payload": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "folder": "{view.params.folder}",
+                      "submodule": "{view.params.submodule}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "type": "expr-struct"
+                }
+              }
+            },
             "props": {
               "text": "Fetch origin"
             },
@@ -130,6 +131,20 @@
               ],
               "height": 35
             },
+            "propConfig": {
+              "custom.payload": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "folder": "{view.params.folder}",
+                      "submodule": "{view.params.submodule}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "type": "expr-struct"
+                }
+              }
+            },
             "props": {
               "text": "Pull origin"
             },
@@ -178,6 +193,20 @@
                 }
               ],
               "height": 35
+            },
+            "propConfig": {
+              "custom.payload": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "folder": "{view.params.folder}",
+                      "submodule": "{view.params.submodule}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "type": "expr-struct"
+                }
+              }
             },
             "props": {
               "text": "Push origin"
@@ -257,7 +286,7 @@
                 "binding": {
                   "config": {
                     "struct": {
-                      "folder": "{session.custom.projectsFolder}",
+                      "folder": "{view.params.folder}",
                       "submodule": "{view.params.submodule}"
                     },
                     "waitOnAll": true
@@ -269,7 +298,7 @@
                 "binding": {
                   "config": {
                     "struct": {
-                      "folder": "{session.custom.projectsFolder}",
+                      "folder": "{view.params.folder}",
                       "submodule": "{view.params.submodule}"
                     },
                     "waitOnAll": true
@@ -286,7 +315,7 @@
               "props.value": {
                 "binding": {
                   "config": {
-                    "path": "session.custom.projectsFolder"
+                    "path": "view.params.folder"
                   },
                   "transforms": [
                     {

@@ -426,6 +426,10 @@
                     "showCloseIcon": true,
                     "title": "Manage",
                     "type": "open",
+                    "viewParams": {
+                      "folder": "{session.custom.projectsFolder}",
+                      "submodule": ""
+                    },
                     "viewPath": "dialogs/manage-repository",
                     "viewportBound": false
                   },
@@ -516,21 +520,28 @@
         {
           "messageType": "git-setup-fetch",
           "pageScope": true,
-          "script": "\tsourcecontrol.Fetch(payload.folder, \"\")\n\tsystem.perspective.sendMessage(\"git-setup-refresh\")",
+          "script": "\tif not (payload.username or payload.password) and sourcecontrol.requireLogin(payload.folder, payload.submodule):\n\t\tsystem.perspective.sendMessage(\"git-request-login\", {\"message\":\"git-setup-fetch\", \"payload\": payload})\n\telse:\n\t\tsourcecontrol.Fetch(payload.folder, payload.submodule, payload)\n\t\tsystem.perspective.sendMessage(\"git-setup-refresh\")",
           "sessionScope": false,
           "viewScope": false
         },
         {
           "messageType": "git-setup-pull",
           "pageScope": true,
-          "script": "\tsourcecontrol.Pull(payload.folder, \"\")\n\tsystem.perspective.sendMessage(\"git-setup-refresh\")",
+          "script": "\tif not (payload.username or payload.password) and sourcecontrol.requireLogin(payload.folder, payload.submodule):\n\t\tsystem.perspective.sendMessage(\"git-request-login\", {\"message\":\"git-setup-pull\", \"payload\": payload})\n\telse:\n\t\tsourcecontrol.Pull(payload.folder, payload.submodule, payload)\n\t\tsystem.perspective.sendMessage(\"git-setup-refresh\")",
           "sessionScope": false,
           "viewScope": false
         },
         {
           "messageType": "git-setup-push",
           "pageScope": true,
-          "script": "\tsourcecontrol.Push(payload.folder, \"\")\n\tsystem.perspective.sendMessage(\"git-setup-refresh\")",
+          "script": "\tif not (payload.username or payload.password) and sourcecontrol.requireLogin(payload.folder, payload.submodule):\n\t\tsystem.perspective.sendMessage(\"git-request-login\", {\"message\":\"git-setup-push\", \"payload\": payload})\n\telse:\n\t\tsourcecontrol.Push(payload.folder, payload.submodule, payload)\n\t\tsystem.perspective.sendMessage(\"git-setup-refresh\")",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "git-request-login",
+          "pageScope": true,
+          "script": "\tsystem.perspective.openPopup(\"git-login\", \"dialogs/login\", payload, \"Login\")",
           "sessionScope": false,
           "viewScope": false
         }

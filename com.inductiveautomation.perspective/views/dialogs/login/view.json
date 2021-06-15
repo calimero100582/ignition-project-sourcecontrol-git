@@ -1,9 +1,23 @@
 {
   "custom": {},
-  "params": {},
+  "params": {
+    "message": "",
+    "payload": ""
+  },
+  "propConfig": {
+    "params.message": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.payload": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
   "props": {
     "defaultSize": {
-      "height": 180
+      "height": 180,
+      "width": 455
     }
   },
   "root": {
@@ -12,7 +26,7 @@
         "children": [
           {
             "meta": {
-              "name": "txtClonePassword"
+              "name": "txtPassword"
             },
             "position": {
               "breakpoints": [
@@ -20,21 +34,21 @@
                   "colIndex": 0,
                   "name": "sm",
                   "order": 1,
-                  "rowIndex": 2,
+                  "rowIndex": 1,
                   "span": 12
                 },
                 {
                   "colIndex": 6,
                   "name": "md",
                   "order": 1.5,
-                  "rowIndex": 1,
+                  "rowIndex": 0,
                   "span": 6
                 },
                 {
                   "colIndex": 6,
                   "name": "lg",
                   "order": 1,
-                  "rowIndex": 1,
+                  "rowIndex": 0,
                   "span": 6
                 }
               ],
@@ -50,7 +64,7 @@
               "component": {
                 "onActionPerformed": {
                   "config": {
-                    "script": "\tsystem.perspective.sendMessage(\"git-dialog-clone\", self.custom.payload)"
+                    "script": "\tfrom collections import namedtuple\n\t\n\tpayload \u003d {}\n\tpayload.update(self.custom.payload.originalPayload)\n\t\n\tif self.custom.payload.save:\n\t\thost \u003d sourcecontrol.getRemoteHost(self.custom.payload.originalPayload.folder, self.custom.payload.originalPayload.submodule)\n\t\tnetrc.AddOrUpdateEntry(self.session.custom.netrcFile, host, self.custom.payload.loginPayload.username, self.custom.payload.loginPayload.password)\n\telse:\n\t\tpayload.update(self.custom.payload.loginPayload)\n\t\n\tpayload \u003d namedtuple(\u0027Struct\u0027, payload.keys())(*payload.values())\n\t\n\tsystem.perspective.print(payload)\n\tsystem.perspective.sendMessage(self.view.params.message, payload)\n\tsystem.perspective.closePopup(\"git-login\")"
                   },
                   "scope": "G",
                   "type": "script"
@@ -58,7 +72,7 @@
               }
             },
             "meta": {
-              "name": "btnCloneRepo"
+              "name": "btnLogin"
             },
             "position": {
               "breakpoints": [
@@ -66,21 +80,21 @@
                   "colIndex": 0,
                   "name": "sm",
                   "order": 1,
-                  "rowIndex": 4,
+                  "rowIndex": 3,
                   "span": 12
                 },
                 {
                   "colIndex": 0,
                   "name": "md",
                   "order": 1,
-                  "rowIndex": 3,
+                  "rowIndex": 2,
                   "span": 12
                 },
                 {
                   "colIndex": 0,
                   "name": "lg",
                   "order": 1,
-                  "rowIndex": 3,
+                  "rowIndex": 2,
                   "span": 12
                 }
               ],
@@ -91,11 +105,12 @@
                 "binding": {
                   "config": {
                     "struct": {
-                      "folder": "{session.custom.projectsFolder}",
-                      "password": "{../txtClonePassword.props.text}",
-                      "saveCredentials": "{../chkSaveCredentials.props.selected}",
-                      "uri": "{../txtCloneUri.props.text}",
-                      "username": "{../txtCloneUsername.props.text}"
+                      "loginPayload": {
+                        "password": "{../txtPassword.props.text}",
+                        "username": "{../txtUsername.props.text}"
+                      },
+                      "originalPayload": "{view.params.payload}",
+                      "save": "{../chkSaveCredentials.props.selected}"
                     },
                     "waitOnAll": true
                   },
@@ -104,13 +119,13 @@
               }
             },
             "props": {
-              "text": "Clone"
+              "text": "Login"
             },
             "type": "ia.input.button"
           },
           {
             "meta": {
-              "name": "txtCloneUsername"
+              "name": "txtUsername"
             },
             "position": {
               "breakpoints": [
@@ -118,21 +133,21 @@
                   "colIndex": 0,
                   "name": "sm",
                   "order": 1,
-                  "rowIndex": 1,
+                  "rowIndex": 0,
                   "span": 12
                 },
                 {
                   "colIndex": 0,
                   "name": "md",
                   "order": 1,
-                  "rowIndex": 1,
+                  "rowIndex": 0,
                   "span": 6
                 },
                 {
                   "colIndex": 0,
                   "name": "lg",
                   "order": 0.5,
-                  "rowIndex": 1,
+                  "rowIndex": 0,
                   "span": 6
                 }
               ],
@@ -153,21 +168,21 @@
                   "colIndex": 0,
                   "name": "sm",
                   "order": 1,
-                  "rowIndex": 3,
+                  "rowIndex": 2,
                   "span": 12
                 },
                 {
                   "colIndex": 6,
                   "name": "md",
                   "order": 1,
-                  "rowIndex": 2,
+                  "rowIndex": 1,
                   "span": 6
                 },
                 {
                   "colIndex": 6,
                   "name": "lg",
                   "order": 0.5,
-                  "rowIndex": 2,
+                  "rowIndex": 1,
                   "span": 5
                 }
               ],
@@ -177,43 +192,6 @@
               "text": "Save Credentials to Server"
             },
             "type": "ia.input.checkbox"
-          },
-          {
-            "meta": {
-              "name": "txtCloneUri"
-            },
-            "position": {
-              "breakpoints": [
-                {
-                  "colIndex": 0,
-                  "name": "sm",
-                  "order": 1,
-                  "rowIndex": 0,
-                  "span": 12
-                },
-                {
-                  "colIndex": 0,
-                  "name": "md",
-                  "order": 1.5,
-                  "rowIndex": 0,
-                  "span": 12
-                },
-                {
-                  "colIndex": 0,
-                  "name": "lg",
-                  "order": 1.5,
-                  "rowIndex": 0,
-                  "span": 12
-                }
-              ],
-              "height": 40
-            },
-            "props": {
-              "deferUpdates": false,
-              "placeholder": "Enter remote Uri to clone",
-              "rejectUpdatesWhileFocused": false
-            },
-            "type": "ia.input.text-field"
           }
         ],
         "meta": {

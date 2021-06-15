@@ -1,6 +1,22 @@
 {
-  "custom": {},
+  "custom": {
+    "key": "value"
+  },
   "propConfig": {
+    "custom.netrcFile": {
+      "binding": {
+        "config": {
+          "expression": "now(0)"
+        },
+        "transforms": [
+          {
+            "code": "\tfrom java.lang import System\n\tfrom org.apache.commons.lang3 import SystemUtils\n\timport os\n\t\n\tfile \u003d \"_netrc\" if SystemUtils.IS_OS_WINDOWS else \".netrc\"\n\treturn os.path.join(System.getProperty(\"user.home\"), file)",
+            "type": "script"
+          }
+        ],
+        "type": "expr"
+      }
+    },
     "custom.projectsFolder": {
       "binding": {
         "config": {

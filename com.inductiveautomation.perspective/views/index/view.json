@@ -856,7 +856,7 @@
               "component": {
                 "onActionPerformed": {
                   "config": {
-                    "script": "\tsourcecontrol.Push(self.custom.payload.folder, self.custom.payload.submodule)"
+                    "script": "\tsystem.perspective.sendMessage(\"git-index-push\", self.custom.payload)"
                   },
                   "scope": "G",
                   "type": "script"
@@ -988,6 +988,26 @@
     ],
     "meta": {
       "name": "root"
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "git-request-login",
+          "pageScope": true,
+          "script": "\tsystem.perspective.openPopup(\"git-login\", \"dialogs/login\", payload, \"Login\")",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "git-index-push",
+          "pageScope": true,
+          "script": "\tif not (hasattr(payload, \"username\") or hasattr(payload, \"password\")) and sourcecontrol.requireLogin(payload.folder, payload.submodule):\n\t\tsystem.perspective.sendMessage(\"git-request-login\", {\"message\":\"git-index-push\", \"payload\": payload})\n\telse:\n\t\tsourcecontrol.Push(payload.folder, payload.submodule, payload)\n\t\tsystem.perspective.sendMessage(\"git-setup-refresh\")",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
     },
     "type": "ia.container.coord"
   }
