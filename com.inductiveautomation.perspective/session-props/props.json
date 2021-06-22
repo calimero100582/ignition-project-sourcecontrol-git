@@ -1,7 +1,5 @@
 {
-  "custom": {
-    "key": "value"
-  },
+  "custom": {},
   "propConfig": {
     "custom.netrcFile": {
       "binding": {

@@ -20,8 +20,8 @@
   },
   "props": {
     "defaultSize": {
-      "height": 585,
-      "width": 1030
+      "height": 710,
+      "width": 864
     }
   },
   "root": {
@@ -41,11 +41,11 @@
             "position": {
               "breakpoints": [
                 {
-                  "colIndex": 0,
+                  "colIndex": 4,
                   "name": "sm",
-                  "order": 2,
-                  "rowIndex": 1,
-                  "span": 9
+                  "order": 1,
+                  "rowIndex": 0,
+                  "span": 8
                 },
                 {
                   "colIndex": 3,
@@ -129,9 +129,9 @@
                 {
                   "colIndex": 0,
                   "name": "sm",
-                  "order": 2,
-                  "rowIndex": 3,
-                  "span": 12
+                  "order": 2.5,
+                  "rowIndex": 2,
+                  "span": 8
                 },
                 {
                   "colIndex": 3,
@@ -186,14 +186,14 @@
             "position": {
               "breakpoints": [
                 {
-                  "colIndex": 2,
+                  "colIndex": 0,
                   "name": "sm",
-                  "order": 2,
-                  "rowIndex": 2,
-                  "span": 7
+                  "order": 0,
+                  "rowIndex": 3,
+                  "span": 8
                 },
                 {
-                  "colIndex": 2,
+                  "colIndex": 3,
                   "name": "md",
                   "order": 2,
                   "rowIndex": 2,
@@ -280,7 +280,7 @@
                   "colIndex": 0,
                   "name": "sm",
                   "order": 1.5,
-                  "rowIndex": 6,
+                  "rowIndex": 5,
                   "span": 12
                 },
                 {
@@ -318,6 +318,10 @@
                     }
                   ],
                   "type": "expr-struct"
+                },
+                "onChange": {
+                  "enabled": null,
+                  "script": "\tself.props.selection.data \u003d None"
                 }
               }
             },
@@ -471,12 +475,7 @@
                 "initialOption": 99999999
               },
               "selection": {
-                "data": [
-                  {
-                    "file": "com.inductiveautomation.perspective/views/dialogs/template/submodule-manage/view.json",
-                    "status": "Untracked"
-                  }
-                ],
+                "data": null,
                 "selectedColumn": "file",
                 "selectedRow": 22
               }
@@ -519,7 +518,7 @@
                 {
                   "colIndex": 2,
                   "name": "lg",
-                  "order": 1,
+                  "order": 1.5,
                   "rowIndex": 4,
                   "span": 10
                 }
@@ -663,9 +662,9 @@
                 {
                   "colIndex": 0,
                   "name": "sm",
-                  "order": 1,
+                  "order": 0,
                   "rowIndex": 0,
-                  "span": 12
+                  "span": 4
                 },
                 {
                   "colIndex": 0,
@@ -712,7 +711,7 @@
                   "name": "sm",
                   "order": 1.5,
                   "rowIndex": 2,
-                  "span": 12
+                  "span": 4
                 },
                 {
                   "colIndex": 0,
@@ -757,9 +756,9 @@
                 {
                   "colIndex": 0,
                   "name": "sm",
-                  "order": 1,
-                  "rowIndex": 5,
-                  "span": 12
+                  "order": 0.5,
+                  "rowIndex": 4,
+                  "span": 2
                 },
                 {
                   "colIndex": 0,
@@ -808,7 +807,7 @@
                   "name": "sm",
                   "order": 2.5,
                   "rowIndex": 1,
-                  "span": 3
+                  "span": 12
                 },
                 {
                   "colIndex": 10,
@@ -851,15 +850,15 @@
                   "colIndex": 0,
                   "name": "sm",
                   "order": 1,
-                  "rowIndex": 5,
-                  "span": 1
+                  "rowIndex": 6,
+                  "span": 2
                 },
                 {
                   "colIndex": 0,
                   "name": "md",
-                  "order": 1,
-                  "rowIndex": 5,
-                  "span": 1
+                  "order": 0.5,
+                  "rowIndex": 4,
+                  "span": 3
                 },
                 {
                   "colIndex": 0,
@@ -897,18 +896,18 @@
             "position": {
               "breakpoints": [
                 {
-                  "colIndex": 10,
+                  "colIndex": 8,
                   "name": "sm",
-                  "order": 3,
-                  "rowIndex": 2,
-                  "span": 1
+                  "order": 0.5,
+                  "rowIndex": 3,
+                  "span": 4
                 },
                 {
                   "colIndex": 10,
                   "name": "md",
                   "order": 3,
                   "rowIndex": 2,
-                  "span": 1
+                  "span": 2
                 },
                 {
                   "colIndex": 9,
