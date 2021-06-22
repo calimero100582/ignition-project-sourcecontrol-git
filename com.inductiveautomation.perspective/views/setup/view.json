@@ -12,7 +12,7 @@
   },
   "props": {
     "defaultSize": {
-      "height": 516,
+      "height": 573,
       "width": 1008
     }
   },
@@ -254,11 +254,15 @@
                   "path": "material/delete"
                 }
               },
+              "primary": false,
               "text": "Delete .git folder"
             },
             "type": "ia.input.button"
           },
           {
+            "custom": {
+              "key": "value"
+            },
             "meta": {
               "name": "lblClone"
             },
@@ -302,7 +306,7 @@
                 "onActionPerformed": {
                   "config": {
                     "draggable": false,
-                    "id": "euA9V9on",
+                    "id": "dlg-git-clone",
                     "modal": true,
                     "overlayDismiss": false,
                     "position": {
@@ -367,29 +371,29 @@
           },
           {
             "meta": {
-              "name": "Table"
+              "name": "tblSubmodules"
             },
             "position": {
               "breakpoints": [
                 {
-                  "colIndex": 2,
+                  "colIndex": 3,
                   "name": "sm",
-                  "order": 1,
+                  "order": 2,
                   "rowIndex": 4,
-                  "span": 10
+                  "span": 9
                 },
                 {
-                  "colIndex": 1,
+                  "colIndex": 3,
                   "name": "md",
                   "order": 1,
-                  "rowIndex": 4,
-                  "span": 11
+                  "rowIndex": 5,
+                  "span": 9
                 },
                 {
                   "colIndex": 3,
                   "name": "lg",
                   "order": 1,
-                  "rowIndex": 4,
+                  "rowIndex": 5,
                   "span": 9
                 }
               ],
@@ -403,13 +407,153 @@
                   },
                   "transforms": [
                     {
-                      "code": "\treturn [{\"name\": x} for x in sourcecontrol.getListSubmodule(value, \"\")]",
+                      "code": "\treturn [{\"name\": x, \"submodule\": x} for x in sourcecontrol.getListSubmodule(value, \"\")]",
                       "type": "script"
                     }
                   ],
                   "type": "property"
                 }
               }
+            },
+            "props": {
+              "columns": [
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "name",
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Submodule"
+                  },
+                  "justify": "auto",
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "string",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "submodule",
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "justify": "auto",
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "view",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": false,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "dialogs/template/submodule-manage",
+                  "visible": true,
+                  "width": ""
+                }
+              ]
             },
             "type": "ia.display.table"
           },
@@ -481,10 +625,55 @@
               "text": "Manage"
             },
             "type": "ia.input.button"
+          },
+          {
+            "meta": {
+              "name": "btnAddSubmodule"
+            },
+            "position": {
+              "breakpoints": [
+                {
+                  "colIndex": 0,
+                  "name": "sm",
+                  "order": 1,
+                  "rowIndex": 4,
+                  "span": 1
+                },
+                {
+                  "colIndex": 3,
+                  "name": "md",
+                  "order": 1,
+                  "rowIndex": 4,
+                  "span": 9
+                },
+                {
+                  "colIndex": 3,
+                  "name": "lg",
+                  "order": 1,
+                  "rowIndex": 4,
+                  "span": 9
+                }
+              ],
+              "height": 35
+            },
+            "propConfig": {
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "!{../btnInitFolder.props.enabled}"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "text": "Add Project as Submodule"
+            },
+            "type": "ia.input.button"
           }
         ],
         "meta": {
-          "name": "ColumnContainer"
+          "name": "sizing"
         },
         "position": {
           "height": 1,
@@ -541,7 +730,7 @@
         {
           "messageType": "git-request-login",
           "pageScope": true,
-          "script": "\tsystem.perspective.openPopup(\"git-login\", \"dialogs/login\", payload, \"Login\")",
+          "script": "\tsystem.perspective.openPopup(\"dlg-git-login\", \"dialogs/login\", params \u003d payload, title \u003d \"Login\", draggable \u003d False, resizable \u003d False, modal \u003d True)",
           "sessionScope": false,
           "viewScope": false
         }

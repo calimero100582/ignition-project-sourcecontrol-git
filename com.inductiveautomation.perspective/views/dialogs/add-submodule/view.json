@@ -3,7 +3,7 @@
   "params": {},
   "props": {
     "defaultSize": {
-      "height": 240,
+      "height": 280,
       "width": 440
     }
   },
@@ -87,7 +87,7 @@
                   "span": 1
                 }
               ],
-              "height": 190
+              "height": 230
             },
             "props": {
               "path": "dialogs/template/clone"
@@ -107,6 +107,10 @@
     ],
     "meta": {
       "name": "root"
+    },
+    "position": {
+      "x": 0,
+      "y": 0
     },
     "props": {
       "mode": "percent",

@@ -37,23 +37,20 @@ def Init(folder):
 	git = Git.init().setDirectory(path).call()
 	git.close()
 
-def Clone(folder, uri, username, password):
+def Clone(folder, uri, payload):
 	import os
 	from java.io import File
 	from org.eclipse.jgit.api import Git
 	from org.eclipse.jgit.transport import UsernamePasswordCredentialsProvider
 
-	path = File(folder)
-	cloneCommand = Git.cloneRepository()
-	
-	cloneCommand.setURI(uri)
-	cloneCommand.setDirectory(path)
-	
-	if username or password:
-		cloneCommand.setCredentialsProvider(UsernamePasswordCredentialsProvider(username, password))
-	
-	git = cloneCommand.call()
-	git.close()
+	# In this case, cloning is not really a good idea as it requires an empty folder
+	# 1 - Init
+	Init(folder)
+	# 2 - Add remote as origin
+	AddRemote(folder, "", "origin", uri)
+	# 3 - Pull
+	Pull(folder, "", payload)
+	# 4 - Rename current branch and checkout master??
 
 def Status(folder, submodule, subfolder):
 	def callback(git):
@@ -70,7 +67,7 @@ def Fetch(folder, submodule, payload):
 	def callback(git):
 		fetchCommand = git.fetch()
 			
-		addLogin(pushCommand, payload)
+		addLogin(fetchCommand, payload)
 		
 		return fetchCommand.call()
 	
@@ -80,15 +77,13 @@ def Pull(folder, submodule, payload):
 	def callback(git):
 		pullCommand = git.pull()
 			
-		addLogin(pushCommand, payload)
+		addLogin(pullCommand, payload)
 		
 		return pullCommand.call()
 
 	return runGitCommand(folder, submodule, callback)
 
 def Push(folder, submodule, payload):
-	from org.eclipse.jgit.transport import UsernamePasswordCredentialsProvider
-	
 	def callback(git):
 		pushCommand = git.push()
 		
@@ -97,7 +92,66 @@ def Push(folder, submodule, payload):
 		return pushCommand.call()
 	
 	return runGitCommand(folder, submodule, callback)
+
+def Diff(folder, submodule, file):
+	def callback(git):
+		from java.io import ByteArrayOutputStream
+		from java.nio.charset import StandardCharsets
+		from org.eclipse.jgit.treewalk.filter import PathFilter
+
+		diffCommand = git.diff()
+		
+		patchStream = ByteArrayOutputStream()
+		diffCommand.setOutputStream(patchStream)
+		
+		fileFilter = PathFilter.create(file)
+		diffCommand.setPathFilter(fileFilter)
+
+		diffCommand.call()
+		
+		return patchStream.toString(StandardCharsets.UTF_8)
+
+	return runGitCommand(folder, submodule, callback)
+
+def AddRemote(folder, submodule, name, uri):
+	from org.eclipse.jgit.transport import URIish
+	def callback(git):
+		remoteAddCommand = git.remoteAdd()
+		
+		remoteAddCommand.setName(name)
+		remoteAddCommand.setUri(URIish(uri))
+		
+		return remoteAddCommand.call()
 	
+	return runGitCommand(folder, submodule, callback)
+
+def CheckoutBranch(folder, submodule, branch):
+	def callback(git):
+		checkoutCommand = git.checkout()
+		
+		checkoutCommand.setName(branch.replace("refs/heads/", ""))
+		
+		return checkoutCommand.call()
+
+	return runGitCommand(folder, submodule, callback)
+	
+def CreateBranch(folder, submodule, branch, payload):
+	from org.eclipse.jgit.api import CreateBranchCommand
+	def callback(git):
+		checkoutCommand = git.checkout()
+	
+		splitBranch = branch.split("/")
+		checkoutCommand.setName(branch.replace("refs/heads/", ""))
+				
+		checkoutCommand.setCreateBranch(true)
+		checkoutCommand.setName("stable")
+		checkoutCommand.setUpstreamMode(CreateBranchCommand.SetupUpstreamMode.SET_UPSTREAM)
+		checkoutCommand.setStartPoint("origin/stable").call();
+	
+		return checkoutCommand.call()
+
+	return runGitCommand(folder, submodule, callback)
+
 def getListBranch(folder, submodule):
 	from org.eclipse.jgit.api.ListBranchCommand import ListMode
 	def callback(git):

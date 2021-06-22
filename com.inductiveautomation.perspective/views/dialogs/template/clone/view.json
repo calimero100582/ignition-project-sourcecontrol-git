@@ -1,6 +1,14 @@
 {
   "custom": {},
-  "params": {},
+  "params": {
+    "payload": {}
+  },
+  "propConfig": {
+    "params.payload": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
   "props": {
     "defaultSize": {
       "height": 180
@@ -12,7 +20,7 @@
         "children": [
           {
             "meta": {
-              "name": "txtClonePassword"
+              "name": "txtPassword"
             },
             "position": {
               "breakpoints": [
@@ -50,7 +58,7 @@
               "component": {
                 "onActionPerformed": {
                   "config": {
-                    "script": "\tsystem.perspective.sendMessage(\"git-dialog-clone\", self.custom.payload)"
+                    "script": "\tfrom collections import namedtuple\n\t\n\tpayload \u003d {}\n\tpayload.update(self.custom.payload.originalPayload)\n\t\n\tif self.custom.payload.save:\n\t\thost \u003d sourcecontrol.getRemoteHost(self.custom.payload.originalPayload.folder, self.custom.payload.originalPayload.submodule)\n\t\tnetrc.AddOrUpdateEntry(self.session.custom.netrcFile, host, self.custom.payload.loginPayload.username, self.custom.payload.loginPayload.password)\n\telse:\n\t\tpayload.update(self.custom.payload.loginPayload)\n\t\n\tpayload \u003d namedtuple(\u0027Struct\u0027, payload.keys())(*payload.values())\n\t\n\tsystem.perspective.sendMessage(\"git-dialog-clone\", payload)\n\tsystem.perspective.closePopup(\"dlg-git-clone\")"
                   },
                   "scope": "G",
                   "type": "script"
@@ -91,11 +99,12 @@
                 "binding": {
                   "config": {
                     "struct": {
-                      "folder": "{session.custom.projectsFolder}",
-                      "password": "{../txtClonePassword.props.text}",
-                      "saveCredentials": "{../chkSaveCredentials.props.selected}",
-                      "uri": "{../txtCloneUri.props.text}",
-                      "username": "{../txtCloneUsername.props.text}"
+                      "loginPayload": {
+                        "password": "{../txtPassword.props.text}",
+                        "username": "{../txtUsername.props.text}"
+                      },
+                      "originalPayload": "{view.params.payload}",
+                      "save": "{../chkSaveCredentials.props.selected}"
                     },
                     "waitOnAll": true
                   },
@@ -110,7 +119,7 @@
           },
           {
             "meta": {
-              "name": "txtCloneUsername"
+              "name": "txtUsername"
             },
             "position": {
               "breakpoints": [

@@ -4,14 +4,13 @@
   "restricted": false,
   "overridable": true,
   "files": [
-    "view.json",
-    "thumbnail.png"
+    "style.json"
   ],
   "attributes": {
     "lastModification": {
       "actor": "calimero100582",
-      "timestamp": "2021-06-16T16:08:38Z"
+      "timestamp": "2021-06-22T14:07:45Z"
     },
-    "lastModificationSignature": "727926bcc0d28198ecfa923c70c599b1f49ad338794445e56826ce26441c2b38"
+    "lastModificationSignature": "8081b3af6b8f83861790dfe7c9fd01ec24a842bf92e5a2bbc19c0a90dd64ab3a"
   }
 }

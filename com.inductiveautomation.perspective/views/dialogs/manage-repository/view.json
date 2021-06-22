@@ -2,7 +2,7 @@
   "custom": {},
   "params": {
     "folder": "C:\\Program Files\\Inductive Automation\\Ignition\\data\\projects",
-    "submodule": ""
+    "submodule": "ignition-project-sourcecontrol-git"
   },
   "propConfig": {
     "params.folder": {
@@ -305,7 +305,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\tgitBranches \u003d sourcecontrol.getListBranch(value.folder, value.submodule)\n\tbranches \u003d [{\"value\": b.getName(), \"label\": b.getName()} for b in gitBranches]\n\n\treturn branches",
+                      "code": "\tgitBranches \u003d sourcecontrol.getListBranch(value.folder, value.submodule)\n\tbranches \u003d [{\"value\": b.getName(), \"label\": b.getName().replace(\"refs/heads/\", \"\")} for b in gitBranches]\n\n\treturn branches",
                       "type": "script"
                     }
                   ],
@@ -315,11 +315,11 @@
               "props.value": {
                 "binding": {
                   "config": {
-                    "path": "view.params.folder"
+                    "path": "this.custom.payload"
                   },
                   "transforms": [
                     {
-                      "code": "\treturn sourcecontrol.getCurrentBranch(value, \"\")",
+                      "code": "\treturn \"refs/heads/\" + sourcecontrol.getCurrentBranch(value.folder, value.submodule)",
                       "type": "script"
                     }
                   ],

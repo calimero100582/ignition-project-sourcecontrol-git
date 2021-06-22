@@ -469,6 +469,16 @@
               "pager": {
                 "bottom": false,
                 "initialOption": 99999999
+              },
+              "selection": {
+                "data": [
+                  {
+                    "file": "com.inductiveautomation.perspective/views/dialogs/template/submodule-manage/view.json",
+                    "status": "Untracked"
+                  }
+                ],
+                "selectedColumn": "file",
+                "selectedRow": 22
               }
             },
             "scripts": {
@@ -515,6 +525,28 @@
                 }
               ],
               "height": 261
+            },
+            "propConfig": {
+              "props.data": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "file": "{../tblFiles.props.selection.data[0].file}",
+                      "folder": "{session.custom.projectsFolder}",
+                      "project": "{../dropProject.props.value}",
+                      "submodules": "{../dropProject.custom.submodules}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif not value.file:\n\t\treturn []\n\t\t\n\tsubmodule \u003d value.project if value.project in value.submodules else \"\"\n\tproject \u003d value.project if not submodule else \"\"\n\t\n\tdiff \u003d sourcecontrol.Diff(value.folder, submodule, value.file)\n\t\n\tchanges \u003d [{\"value\": {\"changes\": d}, \"style\": {\"classes\": \"difference/added\" if d.startswith(\"+\") else \"difference/removed\" if d.startswith(\"-\") else \"difference/changes\" if d.startswith(\"@@\") else \"\"}} for d in diff.split(\u0027\\n\u0027)]\n\t\n\treturn changes",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              }
             },
             "props": {
               "cells": {
@@ -609,9 +641,8 @@
                 },
                 "style": {
                   "fontFamily": "monospace",
-                  "fontWeight": "bolder",
                   "overflow": "visible",
-                  "whiteSpace": "nowrap"
+                  "whiteSpace": "pre"
                 }
               },
               "selection": {
@@ -812,7 +843,7 @@
           },
           {
             "meta": {
-              "name": "Label"
+              "name": "lblDiff"
             },
             "position": {
               "breakpoints": [
@@ -838,16 +869,13 @@
                   "span": 2
                 }
               ],
-              "height": 60,
-              "width": 50,
-              "x": 96,
-              "y": 387
+              "height": 35
             },
             "props": {
               "style": {
                 "textAlign": "right"
               },
-              "text": "Diff \u003cnot implemented yet\u003e"
+              "text": "Diff"
             },
             "type": "ia.display.label"
           },
@@ -996,7 +1024,7 @@
         {
           "messageType": "git-request-login",
           "pageScope": true,
-          "script": "\tsystem.perspective.openPopup(\"git-login\", \"dialogs/login\", payload, \"Login\")",
+          "script": "\tsystem.perspective.openPopup(\"dlg-git-login\", \"dialogs/login\", params \u003d payload, title \u003d \"Login\", draggable \u003d False, resizable \u003d False, modal \u003d True)",
           "sessionScope": false,
           "viewScope": false
         },

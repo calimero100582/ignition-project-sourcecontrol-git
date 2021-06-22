@@ -1,0 +1,77 @@
+{
+  "custom": {},
+  "params": {
+    "value": ""
+  },
+  "propConfig": {
+    "params.value": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 30,
+      "width": 211
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "draggable": false,
+                    "id": "0PlKjUAt",
+                    "modal": true,
+                    "overlayDismiss": false,
+                    "resizable": false,
+                    "showCloseIcon": true,
+                    "title": "Manage",
+                    "type": "open",
+                    "viewParams": {
+                      "folder": "{session.custom.projectsFolder}",
+                      "submodule": "{view.params.value}"
+                    },
+                    "viewPath": "dialogs/manage-repository",
+                    "viewportBound": false
+                  },
+                  "scope": "C",
+                  "type": "popup"
+                }
+              }
+            },
+            "meta": {
+              "name": "btnManage"
+            },
+            "position": {
+              "grow": 1
+            },
+            "props": {
+              "text": "Manage"
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "sizing"
+        },
+        "position": {
+          "height": 1,
+          "width": 1
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "mode": "percent"
+    },
+    "type": "ia.container.coord"
+  }
+}
