@@ -72,9 +72,14 @@
     "props.id": {
       "access": "SYSTEM",
       "persistent": false
+    },
+    "props.lastActivity": {
+      "access": "SYSTEM",
+      "persistent": false
     }
   },
   "props": {
+    "address": "10.32.7.41",
     "appBar": {
       "togglePosition": "hidden"
     },

@@ -317,6 +317,9 @@
                     "showCloseIcon": true,
                     "title": "Clone",
                     "type": "open",
+                    "viewParams": {
+                      "folder": "{session.custom.projectsFolder}"
+                    },
                     "viewPath": "dialogs/clone",
                     "viewportBound": false
                   },
@@ -407,7 +410,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\treturn [{\"name\": x, \"submodule\": x} for x in sourcecontrol.getListSubmodule(value, \"\")]",
+                      "code": "\ttry:\n\t\treturn [{\"name\": x, \"submodule\": x} for x in sourcecontrol.getListSubmodule(value, \"\")]\n\texcept:\n\t\treturn []",
                       "type": "script"
                     }
                   ],
@@ -627,6 +630,29 @@
             "type": "ia.input.button"
           },
           {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "draggable": true,
+                    "id": "Gk6_DDbh",
+                    "modal": false,
+                    "overlayDismiss": false,
+                    "resizable": true,
+                    "showCloseIcon": true,
+                    "title": "Add Submodule",
+                    "type": "open",
+                    "viewParams": {
+                      "folder": "{session.custom.projectsFolder}"
+                    },
+                    "viewPath": "dialogs/add-submodule",
+                    "viewportBound": false
+                  },
+                  "scope": "C",
+                  "type": "popup"
+                }
+              }
+            },
             "meta": {
               "name": "btnAddSubmodule"
             },
@@ -702,7 +728,7 @@
         {
           "messageType": "git-setup-clone",
           "pageScope": true,
-          "script": "\tsourcecontrol.Clone(payload.folder, payload.uri, payload.username, payload.password)\n\tsystem.perspective.sendMessage(\"git-setup-refresh\")",
+          "script": "\tif not (hasattr(payload, \"username\") or hasattr(payload, \"password\")) and sourcecontrol.requireLoginForUri(payload.uri):\n\t\tsystem.perspective.sendMessage(\"git-request-login\", {\"message\":\"git-setup-clone\", \"payload\": payload})\n\telif payload.submodule:\n\t\tsourcecontrol.AddSubmodule(payload.folder, payload.submodule, payload.uri, payload)\n\telse:\n\t\tsourcecontrol.Clone(payload.folder, payload.uri, payload)\n\t\tsystem.perspective.sendMessage(\"git-setup-refresh\")",
           "sessionScope": false,
           "viewScope": false
         },
@@ -731,6 +757,13 @@
           "messageType": "git-request-login",
           "pageScope": true,
           "script": "\tsystem.perspective.openPopup(\"dlg-git-login\", \"dialogs/login\", params \u003d payload, title \u003d \"Login\", draggable \u003d False, resizable \u003d False, modal \u003d True)",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "git-setup-submodule-add",
+          "pageScope": true,
+          "script": "\tif not (payload.username or payload.password) and sourcecontrol.requireLogin(payload.folder, payload.submodule):\n\t\tsystem.perspective.sendMessage(\"git-request-login\", {\"message\":\"git-setup-submodule-add\", \"payload\": payload})\n\telse:\n\t\tsourcecontrol.SubmoduleAdd(payload.folder, payload.submodule, payload)\n\t\tsystem.perspective.sendMessage(\"git-setup-refresh\")",
           "sessionScope": false,
           "viewScope": false
         }

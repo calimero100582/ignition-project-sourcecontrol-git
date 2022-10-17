@@ -1,9 +1,17 @@
 {
   "custom": {},
-  "params": {},
+  "params": {
+    "folder": "C:\\Program Files\\Inductive Automation\\Ignition\\data\\projects"
+  },
+  "propConfig": {
+    "params.folder": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
   "props": {
     "defaultSize": {
-      "height": 280,
+      "height": 145,
       "width": 440
     }
   },
@@ -44,19 +52,6 @@
             "props": {
               "placeholder": "Enter submodule name"
             },
-            "scripts": {
-              "customMethods": [],
-              "extensionFunctions": null,
-              "messageHandlers": [
-                {
-                  "messageType": "git-dialog-clone",
-                  "pageScope": true,
-                  "script": "\t# implement your handler here\n\t",
-                  "sessionScope": false,
-                  "viewScope": false
-                }
-              ]
-            },
             "type": "ia.input.text-field"
           },
           {
@@ -87,7 +82,25 @@
                   "span": 1
                 }
               ],
-              "height": 230
+              "height": 90
+            },
+            "propConfig": {
+              "props.params.folder": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.folder"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.params.submodule": {
+                "binding": {
+                  "config": {
+                    "path": "../txtSubmodule.props.text"
+                  },
+                  "type": "property"
+                }
+              }
             },
             "props": {
               "path": "dialogs/template/clone"
@@ -117,6 +130,19 @@
       "style": {
         "margin": 10
       }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "git-setup-clone",
+          "pageScope": true,
+          "script": "\tsystem.perspective.closePopup(\u0027\u0027)",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
     },
     "type": "ia.container.coord"
   }

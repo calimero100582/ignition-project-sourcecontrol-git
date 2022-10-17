@@ -1,16 +1,16 @@
 {
-  "scope": "G",
+  "scope": "C",
   "version": 1,
   "restricted": false,
   "overridable": true,
   "files": [
-    "style.json"
+    "data.bin"
   ],
   "attributes": {
     "lastModification": {
       "actor": "Pier-Luc.Duchaine@groupecanam.com",
-      "timestamp": "2022-10-16T23:48:24Z"
+      "timestamp": "2022-10-17T00:51:28Z"
     },
-    "lastModificationSignature": "d76a5055fc6d2bdec046a3d025eed0be6d06d9f8b2611cecf9f15effaaa2fb88"
+    "lastModificationSignature": "313cbf6c43abdcae7f002d90f8ccd5c561aaf9955a68a57ad004b056c88d0ec3"
   }
 }

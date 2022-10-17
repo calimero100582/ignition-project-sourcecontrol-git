@@ -1,17 +1,22 @@
 {
   "custom": {},
   "params": {
-    "payload": {}
+    "folder": "C:\\Program Files\\Inductive Automation\\Ignition\\data\\projects",
+    "submodule": "ignition-project-sourcecontrol-git"
   },
   "propConfig": {
-    "params.payload": {
+    "params.folder": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.submodule": {
       "paramDirection": "input",
       "persistent": true
     }
   },
   "props": {
     "defaultSize": {
-      "height": 180
+      "height": 90
     }
   },
   "root": {
@@ -19,46 +24,14 @@
       {
         "children": [
           {
-            "meta": {
-              "name": "txtPassword"
+            "custom": {
+              "messageHandler": "git-setup-clone"
             },
-            "position": {
-              "breakpoints": [
-                {
-                  "colIndex": 0,
-                  "name": "sm",
-                  "order": 1,
-                  "rowIndex": 2,
-                  "span": 12
-                },
-                {
-                  "colIndex": 6,
-                  "name": "md",
-                  "order": 1.5,
-                  "rowIndex": 1,
-                  "span": 6
-                },
-                {
-                  "colIndex": 6,
-                  "name": "lg",
-                  "order": 1,
-                  "rowIndex": 1,
-                  "span": 6
-                }
-              ],
-              "height": 40
-            },
-            "props": {
-              "placeholder": "password"
-            },
-            "type": "ia.input.password-field"
-          },
-          {
             "events": {
               "component": {
                 "onActionPerformed": {
                   "config": {
-                    "script": "\tfrom collections import namedtuple\n\t\n\tpayload \u003d {}\n\tpayload.update(self.custom.payload.originalPayload)\n\t\n\tif self.custom.payload.save:\n\t\thost \u003d sourcecontrol.getRemoteHost(self.custom.payload.originalPayload.folder, self.custom.payload.originalPayload.submodule)\n\t\tnetrc.AddOrUpdateEntry(self.session.custom.netrcFile, host, self.custom.payload.loginPayload.username, self.custom.payload.loginPayload.password)\n\telse:\n\t\tpayload.update(self.custom.payload.loginPayload)\n\t\n\tpayload \u003d namedtuple(\u0027Struct\u0027, payload.keys())(*payload.values())\n\t\n\tsystem.perspective.sendMessage(\"git-dialog-clone\", payload)\n\tsystem.perspective.closePopup(\"dlg-git-clone\")"
+                    "script": "\tsystem.perspective.sendMessage(self.custom.messageHandler, self.custom.payload)"
                   },
                   "scope": "G",
                   "type": "script"
@@ -74,21 +47,21 @@
                   "colIndex": 0,
                   "name": "sm",
                   "order": 1,
-                  "rowIndex": 4,
+                  "rowIndex": 1,
                   "span": 12
                 },
                 {
                   "colIndex": 0,
                   "name": "md",
                   "order": 1,
-                  "rowIndex": 3,
+                  "rowIndex": 1,
                   "span": 12
                 },
                 {
                   "colIndex": 0,
                   "name": "lg",
                   "order": 1,
-                  "rowIndex": 3,
+                  "rowIndex": 1,
                   "span": 12
                 }
               ],
@@ -99,12 +72,9 @@
                 "binding": {
                   "config": {
                     "struct": {
-                      "loginPayload": {
-                        "password": "{../txtPassword.props.text}",
-                        "username": "{../txtUsername.props.text}"
-                      },
-                      "originalPayload": "{view.params.payload}",
-                      "save": "{../chkSaveCredentials.props.selected}"
+                      "folder": "{view.params.folder}",
+                      "submodule": "{view.params.submodule}",
+                      "uri": "{../txtCloneUri.props.text}"
                     },
                     "waitOnAll": true
                   },
@@ -116,76 +86,6 @@
               "text": "Clone"
             },
             "type": "ia.input.button"
-          },
-          {
-            "meta": {
-              "name": "txtUsername"
-            },
-            "position": {
-              "breakpoints": [
-                {
-                  "colIndex": 0,
-                  "name": "sm",
-                  "order": 1,
-                  "rowIndex": 1,
-                  "span": 12
-                },
-                {
-                  "colIndex": 0,
-                  "name": "md",
-                  "order": 1,
-                  "rowIndex": 1,
-                  "span": 6
-                },
-                {
-                  "colIndex": 0,
-                  "name": "lg",
-                  "order": 0.5,
-                  "rowIndex": 1,
-                  "span": 6
-                }
-              ],
-              "height": 40
-            },
-            "props": {
-              "placeholder": "username"
-            },
-            "type": "ia.input.text-field"
-          },
-          {
-            "meta": {
-              "name": "chkSaveCredentials"
-            },
-            "position": {
-              "breakpoints": [
-                {
-                  "colIndex": 0,
-                  "name": "sm",
-                  "order": 1,
-                  "rowIndex": 3,
-                  "span": 12
-                },
-                {
-                  "colIndex": 6,
-                  "name": "md",
-                  "order": 1,
-                  "rowIndex": 2,
-                  "span": 6
-                },
-                {
-                  "colIndex": 6,
-                  "name": "lg",
-                  "order": 0.5,
-                  "rowIndex": 2,
-                  "span": 5
-                }
-              ],
-              "height": 30
-            },
-            "props": {
-              "text": "Save Credentials to Server"
-            },
-            "type": "ia.input.checkbox"
           },
           {
             "meta": {
@@ -203,14 +103,14 @@
                 {
                   "colIndex": 0,
                   "name": "md",
-                  "order": 1.5,
+                  "order": 1,
                   "rowIndex": 0,
                   "span": 12
                 },
                 {
                   "colIndex": 0,
                   "name": "lg",
-                  "order": 1.5,
+                  "order": 1,
                   "rowIndex": 0,
                   "span": 12
                 }

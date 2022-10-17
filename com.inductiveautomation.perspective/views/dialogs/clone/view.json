@@ -1,9 +1,22 @@
 {
   "custom": {},
-  "params": {},
+  "params": {
+    "folder": "C:\\Program Files\\Inductive Automation\\Ignition\\data\\projects",
+    "submodule": ""
+  },
+  "propConfig": {
+    "params.folder": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.submodule": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
   "props": {
     "defaultSize": {
-      "height": 190,
+      "height": 100,
       "width": 440
     }
   },
@@ -16,6 +29,24 @@
         "position": {
           "height": 1,
           "width": 1
+        },
+        "propConfig": {
+          "props.params.folder": {
+            "binding": {
+              "config": {
+                "path": "view.params.folder"
+              },
+              "type": "property"
+            }
+          },
+          "props.params.submodule": {
+            "binding": {
+              "config": {
+                "path": "view.params.submodule"
+              },
+              "type": "property"
+            }
+          }
         },
         "props": {
           "path": "dialogs/template/clone"
@@ -37,9 +68,9 @@
       "extensionFunctions": null,
       "messageHandlers": [
         {
-          "messageType": "git-dialog-clone",
+          "messageType": "git-setup-clone",
           "pageScope": true,
-          "script": "\t# implement your handler here",
+          "script": "\tsystem.perspective.closePopup(\"dlg-git-clone\")",
           "sessionScope": false,
           "viewScope": false
         }

@@ -1,13 +1,16 @@
-def runGitCommand(folder, submodule, callback):
+def runGitCommand(folder, submodule, callback): 
 	from org.eclipse.jgit.api.errors import TransportException
 	
 	git = Git(folder, submodule)
+	
 	try:
 		return callback(git)
 	except TransportException as e:
 		system.perspective.print(system.util.jsonEncode(e))
 		#system.perspective.sendMessage("git-request-login", {"method": method, "folder": folder, "submodule": submodule, "payload": payload})
-	#except:
+		raise e
+	except:
+		raise
 	#	pass # do some logging eventually?
 	finally:
 		git.close()
@@ -27,7 +30,10 @@ def isRepositoryValid(folder, submodule = "", payload = {}):
 		except:
 			return False
 
-	return runGitCommand(folder, submodule, callback)
+	try:
+		return runGitCommand(folder, submodule, callback)
+	except:
+		return False
 	
 def Init(folder):
 	from java.io import File
@@ -50,7 +56,7 @@ def Clone(folder, uri, payload):
 	AddRemote(folder, "", "origin", uri)
 	# 3 - Pull
 	Pull(folder, "", payload)
-	# 4 - Rename current branch and checkout master??
+	# 4 - Rename current branch and checkout master/main??
 
 def Status(folder, submodule, subfolder):
 	def callback(git):
@@ -125,6 +131,27 @@ def AddRemote(folder, submodule, name, uri):
 	
 	return runGitCommand(folder, submodule, callback)
 
+def AddSubmodule(folder, submodule, uri, payload):
+	from org.eclipse.jgit.transport import URIish
+	def callback(git):
+		import os
+		if os.path.exists(os.path.join(folder, submodule)):
+			submoduleInitCommand = git.submoduleInit()
+			submoduleInitCommand.addPath(submodule)
+			submoduleInitCommand.call()
+			# 2 - Add remote as origin
+			AddRemote(folder, submodule, "origin", uri)
+			# 3 - Pull
+			return Pull(folder, submodule, payload)
+		else:
+			submoduleAddCommand = git.submoduleAdd();
+			submoduleAddCommand.setPath(submodule);
+			submoduleAddCommand.setURI(uri);
+			addLogin(submoduleAddCommand, payload)
+			return submoduleAddCommand.call();
+			
+	return runGitCommand(folder, "", callback)
+
 def CheckoutBranch(folder, submodule, branch):
 	def callback(git):
 		checkoutCommand = git.checkout()
@@ -198,16 +225,24 @@ def Commit(folder, submodule, files, removedFiles, authorName, authorEmail, mess
 	
 	return runGitCommand(folder, submodule, callback)
 
+def getRemoteHostFromUri(uri):
+	from java.net import URI
+	return URI(uri).getHost()
+
 def getRemoteHost(folder, submodule):
 	def callback(git):
-		from java.net import URI
-		
 		remoteUri = git.getRepository().getConfig().getString("remote", "origin", "url")
 	
-		return URI(remoteUri).getHost()
+		return getRemoteHostFromUri(remoteUri)
 	
 	return runGitCommand(folder, submodule, callback)
 
+def requireLoginForUri(uri):
+	from org.eclipse.jgit.transport import NetRC
+
+	netrc = NetRC()
+	return netrc.getEntry(getRemoteHostFromUri(uri)) == None
+	
 def requireLogin(folder, submodule):
 	from org.eclipse.jgit.transport import NetRC
 

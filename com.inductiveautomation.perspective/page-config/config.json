@@ -1,50 +1,50 @@
 {
   "pages": {
-    "/setup": {
-      "viewPath": "setup",
-      "title": ""
+    "/": {
+      "title": "",
+      "viewPath": "index"
     },
     "/documentation": {
-      "viewPath": "documentation",
-      "title": ""
+      "title": "",
+      "viewPath": "documentation"
     },
-    "/": {
-      "viewPath": "index",
-      "title": ""
+    "/setup": {
+      "title": "",
+      "viewPath": "setup"
     }
   },
   "sharedDocks": {
     "cornerPriority": "top-bottom",
     "left": [
       {
-        "viewPath": "framework/main-menu",
-        "id": "",
-        "viewParams": {},
-        "size": 200,
-        "resizable": false,
-        "iconUrl": "",
-        "modal": false,
-        "show": "visible",
         "anchor": "fixed",
-        "content": "push",
         "autoBreakpoint": 480,
-        "handle": "hide"
+        "content": "push",
+        "handle": "hide",
+        "iconUrl": "",
+        "id": "",
+        "modal": false,
+        "resizable": false,
+        "show": "visible",
+        "size": 200,
+        "viewParams": {},
+        "viewPath": "framework/main-menu"
       }
     ],
     "top": [
       {
-        "viewPath": "framework/main-header",
-        "id": "",
-        "viewParams": {},
-        "size": 25,
-        "resizable": false,
-        "iconUrl": "",
-        "modal": false,
-        "show": "visible",
         "anchor": "fixed",
-        "content": "push",
         "autoBreakpoint": 480,
-        "handle": "hide"
+        "content": "push",
+        "handle": "hide",
+        "iconUrl": "",
+        "id": "",
+        "modal": false,
+        "resizable": false,
+        "show": "visible",
+        "size": 25,
+        "viewParams": {},
+        "viewPath": "framework/main-header"
       }
     ]
   }
