@@ -12,7 +12,7 @@ The goal of this project is to be able to manage and version Ignition's projects
 - [ ]  Branch management
 - [ ]  Commit history view
 - [ ]  Rollback/Reset/Revert
-- [ ]  Add project as Submodule
+- [x]  Add project as Submodule
 - [ ]  Submodule management
 - [ ]  Default Commit message
 - [ ]  Link to Azure DevOps
@@ -21,19 +21,3 @@ The goal of this project is to be able to manage and version Ignition's projects
   - etc...
 
 
-### Code to add submodule
-	import java.io.File as File;
-	from org.eclipse.jgit.api import Git
-	import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider as UsernamePasswordCredentialsProvider
-	import os
-
-	path = File(self.session.custom.projectsFolder)
-	git = Git.open(path)
-	addSubmoduleCommand = git.submoduleAdd()
-	
-	addSubmoduleCommand.setURI("<remove repo uri>")
-	addSubmoduleCommand.setPath("<submodule name / project folder>")
-	addSubmoduleCommand.setCredentialsProvider( UsernamePasswordCredentialsProvider("<username or github token>", "<password or azure devops token>"));
-	
-	addSubmoduleCommand.call()
-	git.close()
