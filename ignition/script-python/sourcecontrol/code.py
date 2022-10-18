@@ -135,20 +135,38 @@ def AddSubmodule(folder, submodule, uri, payload):
 	from org.eclipse.jgit.transport import URIish
 	def callback(git):
 		import os
-		if os.path.exists(os.path.join(folder, submodule)):
-			submoduleInitCommand = git.submoduleInit()
-			submoduleInitCommand.addPath(submodule)
-			submoduleInitCommand.call()
-			# 2 - Add remote as origin
-			AddRemote(folder, submodule, "origin", uri)
-			# 3 - Pull
-			return Pull(folder, submodule, payload)
-		else:
+		import shutil
+		project_exists = os.path.exists(os.path.join(folder, submodule))
+		
+		if project_exists:
+			os.rename(os.path.join(folder, submodule), os.path.join(folder, submodule+'.temporary'))
+
+		try:
 			submoduleAddCommand = git.submoduleAdd();
 			submoduleAddCommand.setPath(submodule);
 			submoduleAddCommand.setURI(uri);
 			addLogin(submoduleAddCommand, payload)
+
 			return submoduleAddCommand.call();
+		finally:
+			if project_exists:
+				# gather all files
+				source = os.path.join(folder, submodule+'.temporary')
+				destination = os.path.join(folder, submodule)
+				allfiles = os.listdir(source)
+				 
+				# iterate on all files to move them to destination folder
+				for f in allfiles:
+					src_path = os.path.join(source, f)
+					dst_path = os.path.join(destination, f)
+					if os.path.exists(dst_path):
+						if os.path.isfile(dst_path):
+							os.remove(dst_path)
+						else:
+							shutil.rmtree(dst_path)
+					os.rename(src_path, dst_path)
+				
+				os.rmdir(source)
 			
 	return runGitCommand(folder, "", callback)
 
