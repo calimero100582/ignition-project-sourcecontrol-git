@@ -8,9 +8,9 @@ def runGitCommand(folder, submodule, callback):
 	except TransportException as e:
 		system.perspective.print(system.util.jsonEncode(e))
 		#system.perspective.sendMessage("git-request-login", {"method": method, "folder": folder, "submodule": submodule, "payload": payload})
-		raise e
-	except:
-		raise
+	#	raise e
+	#except:
+	#	raise
 	#	pass # do some logging eventually?
 	finally:
 		git.close()
