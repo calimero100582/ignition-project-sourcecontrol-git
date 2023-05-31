@@ -102,7 +102,8 @@
                     "expression": "coalesce({view.params.project},{this.props.options[0].value})"
                   },
                   "type": "expr"
-                }
+                },
+                "persistent": true
               }
             },
             "scripts": {
@@ -226,7 +227,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\t\n\tfiles \u003d [f[\"value\"][\"file\"] for f in value[\"files\"] if f[\"value\"][\"status\"] !\u003d \"Missing\"]\n\tfiles.sort()\n\t\n\tremovedFiles \u003d [f[\"value\"][\"file\"] for f in value[\"files\"] if f[\"value\"][\"status\"] \u003d\u003d \"Missing\"]\n\tremovedFiles.sort()\n\t\n\treturn {\n\t\t\"message\": value.message,\n\t\t\"authorEmail\": value.authorEmail,\n\t\t\"authorName\": value.authorName,\n\t\t\"folder\": value.folder,\n\t\t\"project\": value.project,\n\t\t\"files\": files,\n\t\t\"removedFiles\": removedFiles,\n\t\t\"isSubmodule\": value.project in value.submodules\n\t}",
+                      "code": "\t\n\tfiles \u003d [f[\"value\"][\"file\"] for f in value[\"files\"] if f[\"value\"][\"selected\"] and f[\"value\"][\"status\"] !\u003d \"Missing\"]\n\tfiles.sort()\n\t\n\tremovedFiles \u003d [f[\"value\"][\"file\"] for f in value[\"files\"] if f[\"value\"][\"selected\"] and f[\"value\"][\"status\"] \u003d\u003d \"Missing\"]\n\tremovedFiles.sort()\n\t\n\treturn {\n\t\t\"message\": value.message,\n\t\t\"authorEmail\": value.authorEmail,\n\t\t\"authorName\": value.authorName,\n\t\t\"folder\": value.folder,\n\t\t\"project\": value.project,\n\t\t\"files\": files,\n\t\t\"removedFiles\": removedFiles,\n\t\t\"isSubmodule\": value.project in value.submodules\n\t}",
                       "type": "script"
                     }
                   ],
@@ -271,6 +272,17 @@
             "type": "ia.input.button"
           },
           {
+            "events": {
+              "component": {
+                "onRowClick": {
+                  "config": {
+                    "script": "\tself.props.data[event.row].value.selected \u003d False \u003d\u003d self.props.data[event.row].value.selected"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
             "meta": {
               "name": "tblFiles"
             },
@@ -313,7 +325,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\tsubmodule \u003d value.project if value.project in value.submodules else \"\"\n\tproject \u003d value.project if not submodule else \"\"\n\t\n\tstatus \u003d sourcecontrol.Status(value.folder, submodule, project)\n\t\n\tfileStatus \u003d {\n\t\t#\"UncommitedChanged\": list(status.getUncommittedChanges()),\n\t\t\"Added\": list(status.getAdded()),\n\t\t\"Changed\": list(status.getChanged()),\n\t\t\"Conflicting\": list(status.getConflicting()),\n\t\t#\"Ignored\": list(status.getIgnoredNotInIndex()),\n\t\t\"Missing\": list(status.getMissing()),\n\t\t\"Modified\": list(status.getModified()),\n\t\t\"Removed\": list(status.getRemoved()),\n\t\t\"Untracked\": list(status.getUntracked())\n\t}\n\t\t\n\tfiles \u003d {}\n\tfor key in fileStatus:\n\t\tfor file in fileStatus[key]:\n\t\t\tif submodule or (project and file.startswith(project)) or (not project and not \"/\" in file):\n\t\t\t\tfiles[file] \u003d key\n\t\n\tresult \u003d []\n\tfor file in files:\n\t\tresult.append({\"file\": file, \"status\": files[file]})\n\t\t\n\tdiff \u003d [{\"value\": file, \"style\": {\"classes\": \"git_filestatus git_filestatus_\" + file[\"status\"]}} for file in result]\n\tdiff.sort()\n\t\n\treturn diff",
+                      "code": "\timport os\n\timport json\n\tsubmodule \u003d value.project if value.project in value.submodules else \"\"\n\tproject \u003d value.project if not submodule else \"\"\n\t\n\tstatus \u003d sourcecontrol.Status(value.folder, submodule, project)\n\t\n\tfileStatus \u003d {\n\t\t#\"UncommitedChanged\": list(status.getUncommittedChanges()),\n\t\t\"Added\": list(status.getAdded()),\n\t\t\"Changed\": list(status.getChanged()),\n\t\t\"Conflicting\": list(status.getConflicting()),\n\t\t#\"Ignored\": list(status.getIgnoredNotInIndex()),\n\t\t\"Missing\": list(status.getMissing()),\n\t\t\"Modified\": list(status.getModified()),\n\t\t\"Removed\": list(status.getRemoved()),\n\t\t\"Untracked\": list(status.getUntracked())\n\t}\n\t\t\n\tfiles \u003d {}\n\tfor key in fileStatus:\n\t\tfor file in fileStatus[key]:\n\t\t\tif submodule or (project and file.startswith(project)) or (not project and not \"/\" in file):\n\t\t\t\tfiles[file] \u003d key\n\t\n\tresult \u003d []\n\tfor file in files:\n\t\tauthor \u003d \"\"\n\t\tresourceFile \u003d os.path.abspath(os.path.join(value.folder, project, submodule, file, os.pardir, \u0027resource.json\u0027))\n\t\t\n\t\tif os.path.isfile(resourceFile):\n\t\t\tresource \u003d json.load(open(resourceFile))\n\t\t\tauthor \u003d resource[\"attributes\"][\"lastModification\"][\"actor\"]\n\t\t\tpass\n\t\t\n\t\tresult.append({\"selected\": author \u003d\u003d self.session.props.auth.user.userName, \"file\": file, \"status\": files[file], \"author\": author})\n\t\t\n\tdiff \u003d [{\"value\": file, \"style\": {\"classes\": \"git_filestatus git_filestatus_\" + file[\"status\"]}} for file in result]\n\tdiff.sort()\n\t\n\treturn diff",
                       "type": "script"
                     }
                   ],
@@ -327,11 +339,104 @@
             },
             "props": {
               "cells": {
+                "allowEditOn": "long-press",
                 "style": {
                   "paddingLeft": 5
                 }
               },
               "columns": [
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": true,
+                  "field": "selected",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": " "
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "boolean",
+                  "resizable": false,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": true,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": 35
+                },
                 {
                   "align": "center",
                   "boolean": "checkbox",
@@ -468,6 +573,98 @@
                   "viewPath": "",
                   "visible": true,
                   "width": 15
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "author",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Author"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "string",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": 20
                 }
               ],
               "pager": {
@@ -475,9 +672,7 @@
                 "initialOption": 99999999
               },
               "selection": {
-                "data": null,
-                "selectedColumn": "file",
-                "selectedRow": 22
+                "data": null
               }
             },
             "scripts": {
@@ -530,16 +725,17 @@
                 "binding": {
                   "config": {
                     "struct": {
-                      "file": "{../tblFiles.props.selection.data[0].file}",
+                      "files": "{../tblFiles.props.data}",
                       "folder": "{session.custom.projectsFolder}",
                       "project": "{../dropProject.props.value}",
+                      "selectedFile": "{../tblFiles.props.selection.selectedRow}",
                       "submodules": "{../dropProject.custom.submodules}"
                     },
                     "waitOnAll": true
                   },
                   "transforms": [
                     {
-                      "code": "\tif not value.file:\n\t\treturn []\n\t\t\n\tsubmodule \u003d value.project if value.project in value.submodules else \"\"\n\tproject \u003d value.project if not submodule else \"\"\n\t\n\tdiff \u003d sourcecontrol.Diff(value.folder, submodule, value.file)\n\t\n\tchanges \u003d [{\"value\": {\"changes\": d}, \"style\": {\"classes\": \"difference/added\" if d.startswith(\"+\") else \"difference/removed\" if d.startswith(\"-\") else \"difference/changes\" if d.startswith(\"@@\") else \"\"}} for d in diff.split(\u0027\\n\u0027)]\n\t\n\treturn changes",
+                      "code": "\tif not str(value.selectedFile).isnumeric() or value.selectedFile \u003c 0:\n\t\treturn []\n\t\t\n\tsubmodule \u003d value.project if value.project in value.submodules else \"\"\n\tproject \u003d value.project if not submodule else \"\"\n\t\n\tdiff \u003d sourcecontrol.Diff(value.folder, submodule, value.files[value.selectedFile][\"value\"][\"file\"])\n\t\n\tchanges \u003d [{\"value\": {\"changes\": d}, \"style\": {\"classes\": \"difference/added\" if d.startswith(\"+\") else \"difference/removed\" if d.startswith(\"-\") else \"difference/changes\" if d.startswith(\"@@\") else \"\"}} for d in diff.split(\u0027\\n\u0027)]\n\t\n\treturn changes[:1000]",
                       "type": "script"
                     }
                   ],
@@ -643,9 +839,6 @@
                   "overflow": "visible",
                   "whiteSpace": "pre"
                 }
-              },
-              "selection": {
-                "enableRowSelection": false
               },
               "style": {
                 "overflow": "visible"

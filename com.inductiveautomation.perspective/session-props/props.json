@@ -79,7 +79,7 @@
     }
   },
   "props": {
-    "address": "10.32.7.41",
+    "address": "10.32.6.205",
     "appBar": {
       "togglePosition": "hidden"
     },

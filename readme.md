@@ -20,4 +20,3 @@ The goal of this project is to be able to manage and version Ignition's projects
   - Pull requests
   - etc...
 
-
